@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Thermometer, Map, Sprout, Users, Snowflake } from 'lucide-react';
 import { Reveal } from './Reveal'; // Import the animation wrapper
 
