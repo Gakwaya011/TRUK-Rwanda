@@ -12,7 +12,11 @@ import Footer from './components/Footer';
 import ServicesPage from './pages/ServicesPage'; 
 import AboutPage from './pages/AboutPage'; 
 import CareersPage from './pages/CareersPage'; 
-import ContactPage from './pages/ContactPage'; // IMPORT THIS
+import JobDetailsPage from './pages/JobDetailsPage'; 
+import ContactPage from './pages/ContactPage';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+
 
 // Home Component
 const Home = () => (
@@ -30,11 +34,17 @@ function App() {
   return (
     <main className="font-sans text-gray-900 bg-white">
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/careers" element={<CareersPage />} />
-        <Route path="/contact" element={<ContactPage />} /> {/* UPDATED THIS */}
+        <Route path="/careers/:id" element={<JobDetailsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        
+        {/* Hidden Admin Routes */}
+        <Route path="/truk-admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </main>
   );

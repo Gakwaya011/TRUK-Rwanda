@@ -6,13 +6,16 @@ const AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
+      // Call the Node.js Backend just for Login
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -22,14 +25,16 @@ const AdminLogin = () => {
       const data = await response.json();
 
       if (data.success) {
-        // Save "token" to localStorage so we stay logged in
+        // Login Successful: Save token to browser
         localStorage.setItem('adminToken', data.token);
         navigate('/admin/dashboard');
       } else {
         setError('Invalid username or password');
       }
     } catch (err) {
-      setError('Server error. Is the backend running?');
+      setError('Server connection failed. Is the backend running?');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,8 +77,11 @@ const AdminLogin = () => {
             />
           </div>
 
-          <button className="w-full bg-trukGreen text-white font-bold py-3 rounded-lg hover:bg-[#116D3B] transition">
-            Access Dashboard
+          <button 
+            disabled={loading}
+            className="w-full bg-trukGreen text-white font-bold py-3 rounded-lg hover:bg-[#116D3B] transition disabled:opacity-50"
+          >
+            {loading ? 'Verifying...' : 'Access Dashboard'}
           </button>
         </form>
       </div>
