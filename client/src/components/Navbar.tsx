@@ -1,81 +1,183 @@
-import React, { useState } from 'react';
-import { Menu, X, Search } from 'lucide-react';
-import { Link } from 'react-router-dom'; // IMPORT THIS
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X, Search } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import logo from "../assets/Logo-01.png";
 
-const Navbar = () => {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // We updated 'href' to 'path' for the router
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Contact Us is removed from here because we manually place it as a button
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About us', path: '/about' },
-    { name: 'Our Services', path: '/services' },
-    { name: 'Careers', path: '/careers' },
-    { name: 'Contact us', path: '/contact' },
+    { name: "Home", path: "/" },
+    { name: "About us", path: "/about" },
+    { name: "Our Services", path: "/services" },
+    { name: "Careers", path: "/careers" },
   ];
 
+  const container = {
+    hidden: { opacity: 0, y: -18 },
+    show: { opacity: 1, y: 0, transition: { staggerChildren: 0.06 } },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: -6 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+  };
+
   return (
-    <nav className="bg-white rounded-lg shadow-xl py-4 px-6 md:px-10 mx-auto w-full max-w-[85rem] font-sans relative z-50 transition-all duration-300">
-      <div className="flex justify-between items-center h-12">
+    <motion.header
+      initial="hidden"
+      animate="show"
+      variants={container}
+      className={`fixed left-0 right-0 mx-auto top-4 z-50 max-w-[1200px] px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
+        scrolled ? "backdrop-blur-xl bg-white/70 shadow-lg" : "backdrop-blur-md bg-white/60"
+      } rounded-2xl`}
+    >
+      <div className="flex items-center justify-between gap-4 py-3">
         
-        {/* LOGO - Links back to Home */}
-        <Link to="/" className="flex-shrink-0 flex flex-col items-start cursor-pointer group">
-          <h1 className="text-4xl font-black tracking-tighter text-black leading-none group-hover:opacity-80 transition-opacity">
-            TRUK
-          </h1>
-          <div className="flex space-x-1 mt-1.5">
-            <div className="h-1.5 w-5 bg-[#00A3E0] rounded-sm"></div>
-            <div className="h-1.5 w-5 bg-[#FAD201] rounded-sm"></div>
-            <div className="h-1.5 w-5 bg-[#20603D] rounded-sm"></div>
-          </div>
-        </Link>
+        {/* LEFT LOGO */}
+        <motion.div variants={item} className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
+            <motion.img
+              src={logo}
+              alt="TRUK Logo"
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03, rotate: -3 }}
+              transition={{ duration: 0.45 }}
+              className="h-10 md:h-12 w-auto object-contain"
+            />
+            <div className="hidden sm:block">
+              <div className="text-sm font-bold text-gray-800">TRUK Rwanda</div>
+              <div className="text-[11px] text-gray-500">Safe · Fresh · On Time</div>
+            </div>
+          </Link>
+        </motion.div>
 
-        {/* DESKTOP MENU */}
-        <div className="hidden md:flex flex-1 justify-end items-center space-x-8 mr-8">
-          {navLinks.map((link) => (
+        {/* DESKTOP NAV */}
+        <div className="hidden md:flex flex-1 items-center justify-center">
+          <nav className="flex items-center space-x-6">
+            {navLinks.map((link) => (
+              <motion.div key={link.name} variants={item} className="relative group">
+                <Link
+                  to={link.path}
+                  className="text-[13px] font-semibold text-gray-800 uppercase tracking-wider px-2 py-1 relative inline-block group"
+                >
+                  <span className="relative z-10">{link.name}</span>
+
+                  {/* center underline */}
+                  <span className="absolute left-1/2 top-full -translate-x-1/2 w-0 h-[2px] bg-trukGreen rounded-full transition-all duration-300 group-hover:w-full"></span>
+
+                  {/* glow */}
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    whileHover={{ opacity: 0.25, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="pointer-events-none absolute inset-0 bg-trukGreen blur-md rounded opacity-0"
+                  />
+                </Link>
+              </motion.div>
+            ))}
+          </nav>
+        </div>
+
+        {/* RIGHT ACTIONS */}
+        <div className="flex items-center gap-3">
+          
+          {/* Search */}
+          <motion.div variants={item} className="relative">
+            <div className="flex items-center gap-2">
+              <AnimatePresence>
+                {searchOpen && (
+                  <motion.input
+                    key="search"
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: 220, opacity: 1 }}
+                    exit={{ width: 0, opacity: 0 }}
+                    transition={{ duration: 0.35 }}
+                    className="px-3 py-2 rounded-full border border-gray-200 bg-white text-sm shadow-sm outline-none"
+                    placeholder="Search jobs, services..."
+                    autoFocus
+                    onBlur={() => setSearchOpen(false)}
+                  />
+                )}
+              </AnimatePresence>
+
+              <button
+                onClick={() => setSearchOpen((s) => !s)}
+                className="p-2 rounded-full hover:bg-gray-100 active:scale-95 transition"
+              >
+                <Search size={18} />
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Desktop Contact Button */}
+          <motion.div variants={item} className="hidden md:flex items-center gap-3">
             <Link
-              key={link.name}
-              to={link.path}
-              className="relative text-[13px] font-bold text-gray-800 hover:text-trukGreen uppercase tracking-widest transition duration-300 group"
+              to="/contact"
+              className="px-3 py-2 text-sm rounded-lg bg-trukGreen text-white font-semibold shadow-sm hover:opacity-95 transition"
             >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-trukGreen transition-all duration-300 group-hover:w-full"></span>
+              Contact us
             </Link>
-          ))}
-        </div>
+          </motion.div>
 
-        {/* SEARCH ICON */}
-        <div className="hidden md:flex items-center border-l-2 border-gray-100 pl-6 h-10">
-          <button className="text-gray-400 hover:text-trukGreen hover:scale-110 transition-all duration-300">
-            <Search size={24} strokeWidth={2.5} />
-          </button>
-        </div>
-
-        {/* MOBILE MENU BUTTON */}
-        <div className="md:hidden flex items-center">
-          <button onClick={() => setIsOpen(!isOpen)} className="text-gray-800 hover:text-trukGreen focus:outline-none">
-            {isOpen ? <X size={32} /> : <Menu size={32} />}
-          </button>
+          {/* Mobile menu button */}
+          <motion.div variants={item} className="md:hidden">
+            <button
+              onClick={() => setIsOpen((s) => !s)}
+              className="p-2 rounded-lg bg-white/80 border border-gray-100 shadow-sm"
+            >
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </motion.div>
         </div>
       </div>
 
       {/* MOBILE MENU */}
-      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100 mt-4 border-t pt-4' : 'max-h-0 opacity-0'}`}>
-        <div className="space-y-2">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className="block px-4 py-3 text-sm font-bold text-gray-700 hover:text-white hover:bg-trukGreen uppercase rounded-lg transition-colors duration-200"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </nav>
-  );
-};
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.35 }}
+            // Added bg-white/95 so the menu is readable over images
+            className="md:hidden mt-2 px-4 pb-4 bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-100 shadow-xl overflow-hidden"
+          >
+            <div className="flex flex-col gap-2 pt-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="block px-3 py-2 rounded-lg font-semibold text-gray-800 hover:bg-gray-100 transition"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
 
-export default Navbar;
+              {/* ADDED: Mobile Contact Button */}
+              <Link
+                to="/contact"
+                className="block px-3 py-3 mt-2 rounded-lg font-bold text-white bg-trukGreen text-center shadow-md active:scale-95 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                Contact Us
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
+  );
+}

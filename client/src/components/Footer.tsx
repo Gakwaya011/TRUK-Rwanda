@@ -1,10 +1,10 @@
 import React from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom'; // 1. Import Link
 
 const Footer = () => {
   return (
-    // Dark Green Background, Full Width.
-    // Added pt-24 (padding top) to accommodate the overlapping contact card.
+    // Dark Green Background
     <footer className="bg-[#0d3326] text-white font-sans pt-24 pb-8 relative z-0">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         
@@ -15,15 +15,17 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-1 tracking-wide">TRUK Rwanda Ltd</h3>
             <p className="text-xs text-gray-400 mb-4">Cold-Chain Logistics • Transport • Storage</p>
             
+            {/* 2. UPDATED LINKS TO USE REACT ROUTER */}
             <div className="flex flex-wrap justify-center md:justify-start gap-3 text-[11px] text-gray-300 uppercase font-bold tracking-wider">
-              <a href="#" className="hover:text-[#FAD201] transition">Home</a> <span>|</span>
-              <a href="#about" className="hover:text-[#FAD201] transition">About</a> <span>|</span>
-              <a href="#services" className="hover:text-[#FAD201] transition">Services</a> <span>|</span>
-              <a href="#careers" className="hover:text-[#FAD201] transition">Careers</a> <span>|</span>
-              <a href="#contact" className="hover:text-[#FAD201] transition">Contact</a>
+              <Link to="/" className="hover:text-[#FAD201] transition">Home</Link> <span>|</span>
+              <Link to="/about" className="hover:text-[#FAD201] transition">About</Link> <span>|</span>
+              <Link to="/services" className="hover:text-[#FAD201] transition">Services</Link> <span>|</span>
+              <Link to="/careers" className="hover:text-[#FAD201] transition">Careers</Link> <span>|</span>
+              <Link to="/contact" className="hover:text-[#FAD201] transition">Contact</Link>
             </div>
+            
              <div className="mt-2 text-[10px] text-gray-500">
-                <a href="#" className="hover:text-white">Terms & Privacy</a>
+                <Link to="#" className="hover:text-white">Terms & Privacy</Link>
             </div>
           </div>
 
