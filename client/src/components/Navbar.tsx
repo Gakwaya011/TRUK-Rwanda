@@ -1,145 +1,105 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../assets/Logo-01.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [serviceDropdown, setServiceDropdown] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Contact Us is removed from here because we manually place it as a button
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About us", path: "/about" },
-    { name: "Our Services", path: "/services" },
-    { name: "Careers", path: "/careers" },
+  const serviceLinks = [
+    { name: "Refrigerated Transport", path: "/services/transport" },
+    { name: "Cold Storage", path: "/services/storage" },
+    { name: "Farm-to-Market", path: "/services/farm-to-market" },
+    { name: "Cross-Border Trade", path: "/services/cross-border" },
   ];
 
-  const container = {
-    hidden: { opacity: 0, y: -18 },
-    show: { opacity: 1, y: 0, transition: { staggerChildren: 0.06 } },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: -6 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-  };
-
   return (
-    <motion.header
-      initial="hidden"
-      animate="show"
-      variants={container}
-      className={`fixed left-0 right-0 mx-auto top-4 z-50 max-w-[1200px] px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
-        scrolled ? "backdrop-blur-xl bg-white/70 shadow-lg" : "backdrop-blur-md bg-white/60"
-      } rounded-2xl`}
-    >
-      <div className="flex items-center justify-between gap-4 py-3">
+    <header className="fixed left-0 right-0 mx-auto top-4 z-50 max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      
+      {/* SOLID WHITE CARD */}
+      <div className="bg-white shadow-2xl rounded-2xl border border-white/20 px-6 py-3 flex items-center justify-between transition-all duration-300">
         
-        {/* LEFT LOGO */}
-        <motion.div variants={item} className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-3">
-            <motion.img
-              src={logo}
-              alt="TRUK Logo"
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.03, rotate: -3 }}
-              transition={{ duration: 0.45 }}
-              className="h-10 md:h-12 w-auto object-contain"
-            />
-            <div className="hidden sm:block">
-              <div className="text-sm font-bold text-gray-800">TRUK Rwanda</div>
-              <div className="text-[11px] text-gray-500">Safe · Fresh · On Time</div>
-            </div>
-          </Link>
-        </motion.div>
+        {/* LOGO ONLY (Text removed) */}
+        <Link to="/" className="flex items-center gap-3 group">
+          <img
+            src={logo}
+            alt="TRUK Logo"
+            className="h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+          />
+        </Link>
 
         {/* DESKTOP NAV */}
-        <div className="hidden md:flex flex-1 items-center justify-center">
-          <nav className="flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <motion.div key={link.name} variants={item} className="relative group">
-                <Link
-                  to={link.path}
-                  className="text-[13px] font-semibold text-gray-800 uppercase tracking-wider px-2 py-1 relative inline-block group"
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link to="/" className="text-[13px] font-bold text-gray-800 hover:text-trukGreen uppercase tracking-wide transition">
+            Home
+          </Link>
+          <Link to="/about" className="text-[13px] font-bold text-gray-800 hover:text-trukGreen uppercase tracking-wide transition">
+            About Us
+          </Link>
+
+          {/* SERVICES DROPDOWN */}
+          <div 
+            className="relative group h-full flex items-center py-2"
+            onMouseEnter={() => setServiceDropdown(true)}
+            onMouseLeave={() => setServiceDropdown(false)}
+          >
+            <Link 
+              to="/services" 
+              className="flex items-center gap-1 text-[13px] font-bold text-gray-800 group-hover:text-trukGreen uppercase tracking-wide transition cursor-pointer"
+            >
+              Our Services
+              <ChevronDown size={14} className={`transition-transform duration-300 ${serviceDropdown ? 'rotate-180' : ''}`} />
+            </Link>
+
+            <AnimatePresence>
+              {serviceDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full -left-4 w-64 pt-4"
                 >
-                  <span className="relative z-10">{link.name}</span>
+                  <div className="bg-white shadow-xl rounded-xl border-t-4 border-trukGreen overflow-hidden">
+                    <div className="py-2">
+                      {serviceLinks.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.path}
+                          className="block px-6 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-trukGreen transition border-b border-gray-50 last:border-none"
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-                  {/* center underline */}
-                  <span className="absolute left-1/2 top-full -translate-x-1/2 w-0 h-[2px] bg-trukGreen rounded-full transition-all duration-300 group-hover:w-full"></span>
-
-                  {/* glow */}
-                  <motion.span
-                    initial={{ opacity: 0, scale: 0.85 }}
-                    whileHover={{ opacity: 0.25, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="pointer-events-none absolute inset-0 bg-trukGreen blur-md rounded opacity-0"
-                  />
-                </Link>
-              </motion.div>
-            ))}
-          </nav>
-        </div>
+          <Link to="/careers" className="text-[13px] font-bold text-gray-800 hover:text-trukGreen uppercase tracking-wide transition">
+            Careers
+          </Link>
+        </nav>
 
         {/* RIGHT ACTIONS */}
-        <div className="flex items-center gap-3">
-          
-          {/* Search */}
-          <motion.div variants={item} className="relative">
-            <div className="flex items-center gap-2">
-              <AnimatePresence>
-                {searchOpen && (
-                  <motion.input
-                    key="search"
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: 220, opacity: 1 }}
-                    exit={{ width: 0, opacity: 0 }}
-                    transition={{ duration: 0.35 }}
-                    className="px-3 py-2 rounded-full border border-gray-200 bg-white text-sm shadow-sm outline-none"
-                    placeholder="Search jobs, services..."
-                    autoFocus
-                    onBlur={() => setSearchOpen(false)}
-                  />
-                )}
-              </AnimatePresence>
+        <div className="flex items-center gap-4">
+          <Link
+            to="/contact"
+            className="hidden md:block px-5 py-2 text-xs font-bold text-white bg-trukGreen rounded-full hover:bg-[#0d522b] transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            Contact Us
+          </Link>
 
-              <button
-                onClick={() => setSearchOpen((s) => !s)}
-                className="p-2 rounded-full hover:bg-gray-100 active:scale-95 transition"
-              >
-                <Search size={18} />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* Desktop Contact Button */}
-          <motion.div variants={item} className="hidden md:flex items-center gap-3">
-            <Link
-              to="/contact"
-              className="px-3 py-2 text-sm rounded-lg bg-trukGreen text-white font-semibold shadow-sm hover:opacity-95 transition"
-            >
-              Contact us
-            </Link>
-          </motion.div>
-
-          {/* Mobile menu button */}
-          <motion.div variants={item} className="md:hidden">
-            <button
-              onClick={() => setIsOpen((s) => !s)}
-              className="p-2 rounded-lg bg-white/80 border border-gray-100 shadow-sm"
-            >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </motion.div>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 text-gray-800 bg-gray-100 rounded-lg"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </div>
 
@@ -150,34 +110,35 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35 }}
-            // Added bg-white/95 so the menu is readable over images
-            className="md:hidden mt-2 px-4 pb-4 bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-100 shadow-xl overflow-hidden"
+            className="md:hidden mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
           >
-            <div className="flex flex-col gap-2 pt-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="block px-3 py-2 rounded-lg font-semibold text-gray-800 hover:bg-gray-100 transition"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
+            <div className="px-6 py-6 space-y-4">
+              <Link to="/" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>Home</Link>
+              <Link to="/about" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>About Us</Link>
+              
+              <div className="pl-4 border-l-2 border-gray-100 space-y-3">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Our Services</p>
+                {serviceLinks.map((subItem) => (
+                   <Link 
+                      key={subItem.name} 
+                      to={subItem.path} 
+                      className="block text-sm font-medium text-gray-600 hover:text-trukGreen"
+                      onClick={() => setIsOpen(false)}
+                   >
+                     {subItem.name}
+                   </Link>
+                ))}
+              </div>
 
-              {/* ADDED: Mobile Contact Button */}
-              <Link
-                to="/contact"
-                className="block px-3 py-3 mt-2 rounded-lg font-bold text-white bg-trukGreen text-center shadow-md active:scale-95 transition"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/careers" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>Careers</Link>
+              
+              <Link to="/contact" className="block w-full py-3 text-center text-sm font-bold text-white bg-trukGreen rounded-lg shadow-md mt-4" onClick={() => setIsOpen(false)}>
                 Contact Us
               </Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

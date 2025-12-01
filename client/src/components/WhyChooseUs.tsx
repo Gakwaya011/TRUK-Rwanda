@@ -1,6 +1,6 @@
-
+import React from 'react';
 import { Thermometer, Map, Sprout, Users, Snowflake } from 'lucide-react';
-import { Reveal } from './Reveal'; // Import the animation wrapper
+import { Reveal } from './Reveal'; 
 
 const WhyChooseUs = () => {
   const features = [
@@ -27,36 +27,36 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-20 bg-white font-sans">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-24 bg-white font-sans">
+      {/* Full width container */}
+      <div className="w-full px-6 lg:px-12">
         
-        {/* Header - Slides up first */}
-        <div className="text-center mb-16">
+        {/* Header */}
+        <div className="text-center mb-24">
           <Reveal width="100%">
             <div className="flex flex-col items-center">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-trukGreen uppercase tracking-tight">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-trukGreen uppercase tracking-tight">
                 Why Choose Us
               </h2>
-              {/* Yellow separator line */}
-              <div className="w-24 h-1.5 bg-[#FAD201] mt-6 rounded-full"></div>
+              <div className="w-24 h-2 bg-[#FAD201] mt-6 rounded-full"></div>
             </div>
           </Reveal>
         </div>
 
-        {/* Icons Grid - Staggered animation */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+        {/* Icons Grid - Spreads full width */}
+        {/* 'justify-around' pushes items to fill the space */}
+        <div className="flex flex-wrap justify-between gap-8 md:gap-0 text-center w-full">
           {features.map((feature, index) => (
-            // delay={index * 0.15} creates a wave effect from left to right
             <Reveal key={index} delay={index * 0.15}>
-              <div className="flex flex-col items-center group cursor-default">
+              <div className="flex flex-col items-center group cursor-default w-full md:w-auto">
                 
                 {/* Circle Icon Container */}
-                <div className="w-24 h-24 rounded-full border-[1.5px] border-trukGreen flex items-center justify-center text-trukGreen mb-6 transition-all duration-300 group-hover:bg-trukGreen group-hover:text-white group-hover:shadow-lg bg-white">
+                <div className="w-28 h-28 rounded-full border-2 border-trukGreen flex items-center justify-center text-trukGreen mb-6 transition-all duration-300 group-hover:bg-trukGreen group-hover:text-white group-hover:shadow-xl bg-white transform group-hover:-translate-y-2">
                   {feature.icon}
                 </div>
 
                 {/* Text */}
-                <h3 className="text-sm md:text-base font-bold text-gray-800 max-w-[150px] leading-tight">
+                <h3 className="text-lg md:text-xl font-bold text-gray-800 max-w-[200px] leading-tight">
                   {feature.title}
                 </h3>
               </div>

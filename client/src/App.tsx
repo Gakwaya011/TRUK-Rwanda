@@ -11,14 +11,10 @@ import Footer from './components/Footer';
 // Import Pages
 import ServicesPage from './pages/ServicesPage'; 
 import AboutPage from './pages/AboutPage'; 
-import CareersPage from './pages/CareersPage'; 
-import JobDetailsPage from './pages/JobDetailsPage'; 
 import ContactPage from './pages/ContactPage';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
+import ServiceDetail from './pages/ServiceDetail';
+import CareersPage from './pages/CareersPage'; // IMPORT THIS
 
-
-// Home Component
 const Home = () => (
   <>
     <Hero />
@@ -34,17 +30,14 @@ function App() {
   return (
     <main className="font-sans text-gray-900 bg-white">
       <Routes>
-        {/* Public Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/services" element={<ServicesPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/careers" element={<CareersPage />} />
-        <Route path="/careers/:id" element={<JobDetailsPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/services/:serviceId" element={<ServiceDetail />} />
         <Route path="/contact" element={<ContactPage />} />
         
-        {/* Hidden Admin Routes */}
-        <Route path="/truk-admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        {/* ADD THIS ROUTE TO FIX THE ERROR */}
+        <Route path="/careers" element={<CareersPage />} />
       </Routes>
     </main>
   );
