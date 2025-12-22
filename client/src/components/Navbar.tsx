@@ -38,6 +38,9 @@ export default function Navbar() {
           <Link to="/about" className="text-[13px] font-bold text-gray-800 hover:text-trukGreen uppercase tracking-wide transition">
             About Us
           </Link>
+          <Link to="/blog" className="text-[13px] font-bold text-gray-800 hover:text-trukGreen uppercase tracking-wide transition">
+  News & Stories
+</Link>
 
           {/* SERVICES DROPDOWN */}
           <div 

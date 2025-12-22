@@ -13,7 +13,17 @@ import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage'; 
 import ContactPage from './pages/ContactPage';
 import ServiceDetail from './pages/ServiceDetail';
-import CareersPage from './pages/CareersPage'; // IMPORT THIS
+import CareersPage from './pages/CareersPage'; 
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import AddBlog from './pages/AddBlog';
+import AddJob from './pages/AddJob';
+import BlogPage from './pages/BlogPage';
+import BlogDetail from './pages/BlogDetail';
+import JobDetail from './pages/JobDetail.tsx';
+import EditBlog from './pages/EditBlog.tsx';
+import ContactSection from './components/ContactSection.tsx';
+import LatestNews from './components/LatestNews.tsx';
 
 const Home = () => (
   <>
@@ -21,7 +31,9 @@ const Home = () => (
     <AboutSection />
     <ServicesSection />
     <WhyChooseUs />
+    <LatestNews/>
     <OurReach />
+    <ContactSection />
     <Footer />
   </>
 );
@@ -38,6 +50,14 @@ function App() {
         
         {/* ADD THIS ROUTE TO FIX THE ERROR */}
         <Route path="/careers" element={<CareersPage />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/add-blog" element={<AddBlog />} />
+        <Route path="/admin/add-job" element={<AddJob />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
+        <Route path="/admin/edit-blog/:id" element={<EditBlog />} />
+        <Route path="/careers/:id" element={<JobDetail />} />
       </Routes>
     </main>
   );

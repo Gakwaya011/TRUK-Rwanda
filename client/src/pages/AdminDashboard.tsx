@@ -1,248 +1,157 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Plus, Trash2, LogOut, Edit2 } from 'lucide-react';
-
-// Define Job Interface
-interface Job {
-  id: number;
-  title: string;
-  type: string;
-  location: string;
-  department: string;
-  description: string;
-  requirements: string;
-  date: string;
-}
+import Navbar from '../components/Navbar';
+import { useNavigate, Link } from 'react-router-dom';
+import { Plus, Trash2, Pencil, Briefcase, FileText, LogOut } from 'lucide-react';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [isAdding, setIsAdding] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<'jobs' | 'blogs'>('blogs'); // Default to blogs (Farmer stories)
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Form Data
-  const [formData, setFormData] = useState({
-    title: '',
-    type: 'On-site',
-    location: '',
-    department: '',
-    description: '',
-    requirements: ''
-  });
-
-  // 1. Check Login & Load Jobs from LocalStorage
+  // Check if logged in
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      navigate('/truk-admin');
-    } else {
-      loadJobs();
-    }
-  }, [navigate]);
+    const token = localStorage.getItem('token');
+    if (!token) navigate('/admin/login');
+    fetchData();
+  }, [activeTab, navigate]);
 
-  const loadJobs = () => {
-    const savedJobs = localStorage.getItem('truk_jobs');
-    if (savedJobs) {
-      setJobs(JSON.parse(savedJobs));
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // Fetch either jobs or blogs based on the tab
+      const endpoint = activeTab === 'jobs' ? 'http://localhost:5000/api/jobs' : 'http://localhost:5000/api/blogs';
+      const res = await fetch(endpoint);
+      const data = await res.json();
+      setItems(data);
+    } catch (error) {
+      console.error("Error fetching data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: number | string) => {
+    if(!window.confirm("Are you sure you want to delete this?")) return;
+
+    const token = localStorage.getItem('token');
+    const endpoint = activeTab === 'jobs' 
+      ? `http://localhost:5000/api/jobs/${id}` 
+      : `http://localhost:5000/api/blogs/${id}`;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (res.ok) {
+        setItems(items.filter(item => item.id !== id && item._id !== id)); // Handle both ID types
+      } else {
+        alert("Failed to delete. You might not be authorized.");
+      }
+    } catch (error) {
+      alert("Server error");
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
+    localStorage.removeItem('token');
     navigate('/');
   };
 
-  const saveToLocalStorage = (updatedJobs: Job[]) => {
-    localStorage.setItem('truk_jobs', JSON.stringify(updatedJobs));
-    setJobs(updatedJobs);
-  };
-
-  const handleDelete = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this job?')) {
-      const updatedJobs = jobs.filter(job => job.id !== id);
-      saveToLocalStorage(updatedJobs);
-    }
-  };
-
-  const handleEdit = (job: Job) => {
-    setFormData({
-      title: job.title,
-      type: job.type,
-      location: job.location,
-      department: job.department,
-      description: job.description,
-      requirements: job.requirements
-    });
-    setEditingId(job.id);
-    setIsAdding(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    let updatedJobs = [...jobs];
-
-    if (editingId) {
-      // Update existing job
-      updatedJobs = updatedJobs.map(job => 
-        job.id === editingId ? { ...job, ...formData } : job
-      );
-    } else {
-      // Create new job
-      const newJob: Job = {
-        id: Date.now(), // Generate ID based on time
-        ...formData,
-        date: new Date().toISOString()
-      };
-      // Add to beginning of array
-      updatedJobs.unshift(newJob);
-    }
-
-    saveToLocalStorage(updatedJobs);
-    
-    // Reset Form
-    setIsAdding(false);
-    setEditingId(null);
-    setFormData({ title: '', type: 'On-site', location: '', department: '', description: '', requirements: '' });
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 font-sans p-8">
+    <div className="min-h-screen bg-gray-50 font-sans">
+      <Navbar />
       
-      <div className="flex justify-between items-center mb-10 max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-trukGreen">Job Dashboard</h1>
-        <button onClick={handleLogout} className="flex items-center gap-2 text-red-600 hover:text-red-800 font-bold border border-red-200 px-4 py-2 rounded-lg bg-white">
-          <LogOut size={18} /> Logout
-        </button>
-      </div>
-
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto px-6 pt-32 pb-20">
         
-        {!isAdding && (
-          <button 
-            onClick={() => { setIsAdding(true); setEditingId(null); setFormData({ title: '', type: 'On-site', location: '', department: '', description: '', requirements: '' }); }}
-            className="mb-8 bg-trukGreen text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-[#116D3B] shadow-md transition-transform transform hover:-translate-y-1"
-          >
-            <Plus size={20} /> Post New Job
-          </button>
-        )}
-
-        {isAdding && (
-          <div className="bg-white p-8 rounded-xl shadow-xl mb-8 border border-gray-200">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">{editingId ? 'Edit Job' : 'New Job Details'}</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Job Title</label>
-                  <input 
-                    className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-trukGreen outline-none" 
-                    required
-                    value={formData.title}
-                    onChange={e => setFormData({...formData, title: e.target.value})}
-                    placeholder="e.g. Senior Driver"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Type</label>
-                  <select 
-                    className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-trukGreen outline-none bg-white"
-                    value={formData.type}
-                    onChange={e => setFormData({...formData, type: e.target.value})}
-                  >
-                    <option>On-site</option>
-                    <option>Remote</option>
-                    <option>Hybrid</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Location</label>
-                  <input 
-                    className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-trukGreen outline-none" 
-                    required
-                    value={formData.location}
-                    onChange={e => setFormData({...formData, location: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Department</label>
-                  <input 
-                    className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-trukGreen outline-none" 
-                    required
-                    value={formData.department}
-                    onChange={e => setFormData({...formData, department: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Job Description</label>
-                <textarea 
-                  className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-trukGreen outline-none h-32" 
-                  required
-                  value={formData.description}
-                  onChange={e => setFormData({...formData, description: e.target.value})}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Requirements (One per line)</label>
-                <textarea 
-                  className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-trukGreen outline-none h-32" 
-                  required
-                  value={formData.requirements}
-                  onChange={e => setFormData({...formData, requirements: e.target.value})}
-                />
-              </div>
-              
-              <div className="flex gap-4 pt-4 border-t">
-                <button className="bg-trukGreen text-white px-8 py-3 rounded-lg font-bold hover:bg-[#116D3B] transition">
-                  {editingId ? 'Update Job' : 'Publish Job'}
-                </button>
-                <button 
-                  type="button" 
-                  onClick={() => setIsAdding(false)} 
-                  className="bg-gray-100 text-gray-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-200 transition"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+          <div>
+            <h1 className="text-3xl font-black text-gray-900">Admin Dashboard</h1>
+            <p className="text-gray-500">Manage your Farmer Stories and Job Openings</p>
           </div>
-        )}
+          <button onClick={handleLogout} className="flex items-center gap-2 text-red-600 font-bold hover:bg-red-50 px-4 py-2 rounded-lg transition">
+            <LogOut size={18} /> Logout
+          </button>
+        </div>
 
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold text-gray-700 mb-4">Active Listings ({jobs.length})</h2>
-          {jobs.length === 0 ? (
-            <div className="text-center py-10 bg-white rounded-xl border border-dashed border-gray-300 text-gray-400">
-              No jobs posted yet. Click "Post New Job" to start.
-            </div>
+        {/* TABS */}
+        <div className="flex gap-4 mb-8 border-b border-gray-200">
+          <button 
+            onClick={() => setActiveTab('blogs')}
+            className={`pb-3 px-4 font-bold flex items-center gap-2 transition-all ${activeTab === 'blogs' ? 'text-trukGreen border-b-4 border-trukGreen' : 'text-gray-400 hover:text-gray-600'}`}
+          >
+            <FileText size={20} /> Farmer Stories (News)
+          </button>
+          <button 
+            onClick={() => setActiveTab('jobs')}
+            className={`pb-3 px-4 font-bold flex items-center gap-2 transition-all ${activeTab === 'jobs' ? 'text-trukGreen border-b-4 border-trukGreen' : 'text-gray-400 hover:text-gray-600'}`}
+          >
+            <Briefcase size={20} /> Job Openings
+          </button>
+        </div>
+
+        {/* ACTION BAR */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold text-gray-700">
+            {activeTab === 'blogs' ? 'All Stories & News' : 'Active Jobs'}
+          </h2>
+          <Link 
+            to={activeTab === 'blogs' ? '/admin/add-blog' : '/admin/add-job'}
+            className="bg-trukGreen text-white px-5 py-2.5 rounded-full font-bold shadow-lg hover:bg-[#0d522b] flex items-center gap-2 transition transform hover:-translate-y-1"
+          >
+            <Plus size={20} /> Add New {activeTab === 'blogs' ? 'Story' : 'Job'}
+          </Link>
+        </div>
+
+        {/* LIST */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          {loading ? (
+            <div className="p-10 text-center text-gray-500">Loading data...</div>
+          ) : items.length === 0 ? (
+            <div className="p-10 text-center text-gray-400 italic">No items found. Click "Add New" to create one.</div>
           ) : (
-            jobs.map((job) => (
-              <div key={job.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                  <h3 className="text-lg font-bold text-gray-800">{job.title}</h3>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="text-xs font-bold px-2 py-1 bg-blue-50 text-blue-700 rounded uppercase">{job.department}</span>
-                    <span className="text-xs font-bold px-2 py-1 bg-green-50 text-green-700 rounded uppercase">{job.type}</span>
+            <div>
+              {items.map((item: any) => (
+                <div key={item.id || item._id} className="p-6 border-b border-gray-50 last:border-none flex justify-between items-center hover:bg-gray-50 transition">
+                  
+                  {/* Left Side: Title & Info */}
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-800">{item.title}</h3>
+                    <p className="text-sm text-gray-500">
+                      {activeTab === 'blogs' ? item.category : `${item.department} • ${item.location}`}
+                    </p>
                   </div>
+
+                  {/* Right Side: Action Buttons */}
+                  <div className="flex items-center gap-2">
+                    
+                    {/* EDIT BUTTON (Only shows for Blogs/Stories for now) */}
+                    {activeTab === 'blogs' && (
+                      <Link 
+                        to={`/admin/edit-blog/${item.id || item._id}`}
+                        className="p-2 text-gray-400 hover:text-trukGreen hover:bg-green-50 rounded-lg transition"
+                        title="Edit"
+                      >
+                        <Pencil size={20} />
+                      </Link>
+                    )}
+
+                    {/* DELETE BUTTON */}
+                    <button 
+                      onClick={() => handleDelete(item.id || item._id)}
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                      title="Delete"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
+
                 </div>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => handleEdit(job)}
-                    className="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition flex items-center gap-1 text-sm font-bold"
-                  >
-                    <Edit2 size={18} /> Edit
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(job.id)}
-                    className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition flex items-center gap-1 text-sm font-bold"
-                  >
-                    <Trash2 size={18} /> Delete
-                  </button>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
 
