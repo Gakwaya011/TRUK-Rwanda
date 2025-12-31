@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Reveal } from './Reveal';
-import { Send } from 'lucide-react';
+import { Send, Phone, Mail, MapPin } from 'lucide-react';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
@@ -8,90 +8,151 @@ const ContactSection = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Opens the user's email client with the message pre-filled
-    window.location.href = `mailto:info@trukrwanda.com?subject=New Website Inquiry from ${formData.name}&body=${formData.message}%0D%0A%0D%0AContact Details:%0D%0APhone: ${formData.phone}%0D%0AEmail: ${formData.email}`;
+    window.location.href = `mailto:info@trukrwanda.com?subject=Inquiry from ${formData.name}&body=${formData.message}%0D%0A%0D%0APhone: ${formData.phone}`;
   };
 
   return (
-    // OUTER SECTION: White background, adjusted padding
-    <section id="contact" className="py-24 bg-white font-sans relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    // SECTION BG: Light Gray with a subtle texture feel
+    <section id="contact" className="py-24 bg-gray-100 relative z-10 overflow-hidden">
+      
+      {/* Decorative background blobs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-trukGreen/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-[20%] -left-[10%] w-[40%] h-[40%] bg-[#FAD201]/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
         
         {/* Header */}
         <div className="text-center mb-16">
           <Reveal width="100%">
-            <div className="flex flex-col items-center">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#114232] uppercase tracking-tight">
-                    Get in Touch
-                </h2>
-                <div className="w-24 h-1.5 bg-[#FAD201] mt-6 rounded-full"></div>
-            </div>
+            <h2 className="text-3xl md:text-4xl font-black text-trukGreen uppercase tracking-tight">
+                Get in Touch
+            </h2>
+            <div className="w-20 h-1.5 bg-[#FAD201] mt-4 mx-auto rounded-full"></div>
+            <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+                Have a question about our logistics or storage solutions? We are here to help.
+            </p>
           </Reveal>
         </div>
 
-        {/* THE FLOATING GREEN CARD */}
+        {/* THE SPLIT CARD */}
         <Reveal width="100%" delay={0.2}>
-            <div className="max-w-5xl mx-auto bg-[#114232] rounded-3xl shadow-2xl overflow-hidden relative">
-                {/* Decorative Background Element */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-
-                <div className="p-8 md:p-16 relative z-10">
-                    <form onSubmit={handleSubmit} className="space-y-10">
+            <div className="bg-[#114232] rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row min-h-[600px]">
+                
+                {/* LEFT SIDE: Contact Info (Dark Green) */}
+                <div className="lg:w-2/5 p-10 lg:p-14 bg-[#0d3528] text-white flex flex-col justify-between relative overflow-hidden">
+                    {/* Decor */}
+                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#FAD201] opacity-10 rounded-tl-full"></div>
                     
-                    {/* Input Row */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                        <div className="group">
-                            <input 
-                              required
-                              type="text" 
-                              placeholder="Name" 
-                              className="w-full bg-transparent border-b border-gray-400/50 py-3 text-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FAD201] transition-colors font-light"
-                              value={formData.name}
-                              onChange={e => setFormData({...formData, name: e.target.value})}
-                            />
+                    <div>
+                        <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+                        <p className="text-gray-300 mb-12 leading-relaxed">
+                            Fill out the form and our team will get back to you within 24 hours.
+                        </p>
+
+                        <div className="space-y-8">
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-white/10 rounded-lg text-[#FAD201]">
+                                    <Phone size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Call Us</p>
+                                    <p className="font-semibold text-lg">+250 788 123 456</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-white/10 rounded-lg text-[#FAD201]">
+                                    <Mail size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email Us</p>
+                                    <p className="font-semibold text-lg">info@trukrwanda.com</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-white/10 rounded-lg text-[#FAD201]">
+                                    <MapPin size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Visit Us</p>
+                                    {/* UPDATED ADDRESS HERE */}
+                                    <p className="font-semibold text-lg leading-relaxed">
+                                        28 KG11AVE,<br/>
+                                        Opposite Amahoro Stadium
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="group">
-                            <input 
-                              required
-                              type="email" 
-                              placeholder="Email" 
-                              className="w-full bg-transparent border-b border-gray-400/50 py-3 text-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FAD201] transition-colors font-light"
-                              value={formData.email}
-                              onChange={e => setFormData({...formData, email: e.target.value})}
-                            />
+                    </div>
+
+                    <div className="mt-12 lg:mt-0">
+                       <p className="text-sm text-gray-400">© 2025 TRUK Rwanda.</p>
+                    </div>
+                </div>
+
+                {/* RIGHT SIDE: The Form (Lighter Green) */}
+                <div className="lg:w-3/5 p-10 lg:p-14 bg-[#114232] relative">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="group">
+                                <label className="text-xs font-bold text-[#FAD201] uppercase tracking-wider mb-2 block">Your Name</label>
+                                <input 
+                                  required
+                                  type="text" 
+                                  placeholder="John Doe" 
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#FAD201] focus:bg-white/10 transition-all"
+                                  value={formData.name}
+                                  onChange={e => setFormData({...formData, name: e.target.value})}
+                                />
+                            </div>
+                            <div className="group">
+                                <label className="text-xs font-bold text-[#FAD201] uppercase tracking-wider mb-2 block">Your Email</label>
+                                <input 
+                                  required
+                                  type="email" 
+                                  placeholder="john@example.com" 
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#FAD201] focus:bg-white/10 transition-all"
+                                  value={formData.email}
+                                  onChange={e => setFormData({...formData, email: e.target.value})}
+                                />
+                            </div>
                         </div>
+
                         <div className="group">
+                            <label className="text-xs font-bold text-[#FAD201] uppercase tracking-wider mb-2 block">Phone Number</label>
                             <input 
                               type="tel" 
-                              placeholder="Phone Number" 
-                              className="w-full bg-transparent border-b border-gray-400/50 py-3 text-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FAD201] transition-colors font-light"
+                              placeholder="+250..." 
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#FAD201] focus:bg-white/10 transition-all"
                               value={formData.phone}
                               onChange={e => setFormData({...formData, phone: e.target.value})}
                             />
                         </div>
-                    </div>
 
-                    {/* Message */}
-                    <div>
-                        <textarea 
-                          required
-                          rows={4} 
-                          placeholder="How can we help you?" 
-                          className="w-full bg-transparent border-b border-gray-400/50 py-3 text-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FAD201] transition-colors resize-none font-light"
-                          value={formData.message}
-                          onChange={e => setFormData({...formData, message: e.target.value})}
-                        ></textarea>
-                    </div>
+                        <div className="group">
+                            <label className="text-xs font-bold text-[#FAD201] uppercase tracking-wider mb-2 block">Message</label>
+                            <textarea 
+                              required
+                              rows={4} 
+                              placeholder="Tell us about your logistics needs..." 
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#FAD201] focus:bg-white/10 transition-all resize-none"
+                              value={formData.message}
+                              onChange={e => setFormData({...formData, message: e.target.value})}
+                            ></textarea>
+                        </div>
 
-                    {/* Submit Button */}
-                    <div className="text-center pt-4">
-                        <button type="submit" className="group bg-[#FAD201] hover:bg-white hover:text-trukGreen text-black font-extrabold py-4 px-12 rounded-full text-sm uppercase tracking-widest shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-3 mx-auto">
-                            <span>Send Message</span>
-                            <Send size={16} className="group-hover:translate-x-1 transition-transform"/>
-                        </button>
-                    </div>
-
+                        <div className="pt-4">
+                            <button type="submit" className="w-full md:w-auto bg-[#FAD201] hover:bg-white hover:text-trukGreen text-black font-extrabold py-4 px-10 rounded-xl text-sm uppercase tracking-widest shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                                <span>Send Message</span>
+                                <Send size={18} />
+                            </button>
+                        </div>
                     </form>
                 </div>
+
             </div>
         </Reveal>
       </div>

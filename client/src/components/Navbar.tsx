@@ -3,8 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Make sure this path is correct for your PNG logo
-import logo from "../assets/Logo-01.png"; 
+// IMPORT BOTH LOGOS
+import logoDark from "../assets/Logo-01.png";   // Your existing Black Text Logo
+import logoLight from "../assets/logo-white.png"; // NEW: You need to create this (White Text Logo)
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,54 +13,49 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  // Check if we are on the Home Page
   const isHome = location.pathname === "/";
 
-  // Handle Scroll Effect
   useEffect(() => {
-    const onScroll = () => {
-      // If we scroll past 50px, toggle the state
-      setScrolled(window.scrollY > 50);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // --- DYNAMIC STYLES ---
-  
-  // 1. Container Style (Glass vs Solid White)
+
   const navContainerStyle = isHome && !scrolled
-    ? "bg-black/20 backdrop-blur-md border-white/10 shadow-lg" // TRANSPARENT GLASS (On Video)
-    : "bg-white shadow-2xl border-white/20"; // SOLID WHITE (On Scroll)
+    ? "bg-black/30 backdrop-blur-md border-white/10 shadow-lg"
+    : "bg-white shadow-2xl border-white/20";
 
-  // 2. Text Color (White vs Gray)
   const textColor = isHome && !scrolled
-    ? "text-white hover:text-[#FAD201]" // White text on video
-    : "text-gray-800 hover:text-trukGreen"; // Dark text on white bg
+    ? "text-white hover:text-[#FAD201]"
+    : "text-gray-800 hover:text-trukGreen";
 
-  // 3. Dropdown Icon Color
   const chevronColor = isHome && !scrolled ? "text-white" : "text-gray-600";
+
+  // LOGIC TO SWAP THE IMAGE SOURCE
+  // If we are on top (Transparent), use the WHITE logo.
+  // If we scroll down (White BG), use the DARK logo.
+  const currentLogo = isHome && !scrolled ? logoLight : logoDark;
 
   const serviceLinks = [
     { name: "Refrigerated Transport", path: "/services/transport" },
     { name: "Cold Storage", path: "/services/storage" },
-    { name: "Logistics Solutions", path: "/services/logistics" }, // Updated per your new direction
+    { name: "Logistics Solutions", path: "/services/logistics" },
     { name: "Cross-Border Trade", path: "/services/cross-border" },
   ];
 
   return (
     <header className="fixed left-0 right-0 mx-auto top-4 z-50 max-w-[1200px] px-4 sm:px-6 lg:px-8 font-sans">
       
-      {/* --- THE FLOATING NAV CARD --- */}
       <div className={`px-6 py-3 flex items-center justify-between rounded-2xl transition-all duration-500 ease-in-out ${navContainerStyle}`}>
         
-        {/* LOGO */}
+        {/* LOGO IMAGE SWAPPER */}
         <Link to="/" className="flex items-center gap-3 group">
           <img
-            src={logo}
+            src={currentLogo} // Uses the variable we defined above
             alt="TRUK Logo"
-            // We add a brightness filter on the video so the logo pops if it's dark
-            className={`h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300 ${isHome && !scrolled ? "brightness-200" : ""}`} 
+            className="h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" 
           />
         </Link>
 
@@ -75,7 +71,6 @@ export default function Navbar() {
             News
           </Link>
 
-          {/* SERVICES DROPDOWN */}
           <div 
             className="relative group h-full flex items-center py-2"
             onMouseEnter={() => setServiceDropdown(true)}
@@ -139,7 +134,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MOBILE MENU (Always white bg for readability) */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
