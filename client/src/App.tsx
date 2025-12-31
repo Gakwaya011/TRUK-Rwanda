@@ -26,6 +26,7 @@ import ContactSection from './components/ContactSection.tsx';
 import LatestNews from './components/LatestNews.tsx';
 import Navbar from './components/Navbar.tsx';
 import Partners from './components/Partners.tsx';
+import Preloader from './components/Preloader.tsx';
 
 const Home = () => (
   <>
@@ -47,6 +48,7 @@ const Home = () => (
 function App() {
   return (
     <main className="font-sans text-gray-900 bg-white">
+      <Preloader />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutPage />} />
