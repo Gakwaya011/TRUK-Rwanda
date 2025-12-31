@@ -24,15 +24,21 @@ import JobDetail from './pages/JobDetail.tsx';
 import EditBlog from './pages/EditBlog.tsx';
 import ContactSection from './components/ContactSection.tsx';
 import LatestNews from './components/LatestNews.tsx';
+import Navbar from './components/Navbar.tsx';
+import Partners from './components/Partners.tsx';
 
 const Home = () => (
   <>
+  
+  <Navbar/>
+  
     <Hero />
     <AboutSection />
     <ServicesSection />
+    <Partners />
     <WhyChooseUs />
-    <LatestNews/>
-    <OurReach />
+     <OurReach />
+     <LatestNews/>
     <ContactSection />
     <Footer />
   </>

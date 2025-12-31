@@ -1,83 +1,93 @@
 import React from 'react';
-import { Truck, Warehouse, Handshake } from 'lucide-react';
+import { Truck, Warehouse, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Reveal } from './Reveal'; 
 
 const ServicesSection = () => {
-  const services = [
-    {
-      title: 'Transport',
-      icon: <Truck size={32} className="text-white" />,
-      image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1000&auto=format&fit=crop', 
-      description: 'Reliable refrigerated transport across the region.',
-    },
-    {
-      title: 'Logistics',
-      icon: <Warehouse size={32} className="text-white" />,
-      image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1000&auto=format&fit=crop', 
-      description: 'State-of-the-art cold storage and inventory management.',
-    },
-    {
-      title: 'Agri-Business',
-      icon: <Handshake size={32} className="text-white" />,
-      image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=1000&auto=format&fit=crop', 
-      description: 'Connecting farmers to markets with minimal spoilage.',
-    }
-  ];
-
   return (
-    <section id="services" className="py-24 bg-gray-50">
-      {/* UPDATED: Changed to max-w-[1600px] */}
-      <div className="max-w-[1600px] mx-auto px-6 lg:px-8">
+    <section id="services" className="bg-white">
+      
+      {/* HEADER SECTION (Still needs some padding to be readable) */}
+      <div className="py-20 text-center px-6">
+        <Reveal width="100%">
+           <h2 className="text-4xl md:text-5xl font-black text-trukGreen uppercase tracking-tight mb-4">
+              OUR SERVICES
+           </h2>
+           <div className="w-20 h-1.5 bg-[#FAD201] mx-auto rounded-full mb-6"></div>
+           <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+             We specialize in keeping your perishable goods fresh with premium transport and storage solutions.
+           </p>
+        </Reveal>
+      </div>
+
+      {/* --- SERVICE 1: TRANSPORT (Edge-to-Edge) --- */}
+      <div className="w-full flex flex-col lg:flex-row">
         
-        {/* Header */}
-        <div className="text-center mb-24">
-          <Reveal width="100%">
-            <div className="flex flex-col items-center">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-trukGreen uppercase tracking-tight">
-                Our Services
-              </h2>
-              <div className="w-24 h-1.5 bg-[#FAD201] mt-6 rounded-full"></div>
+        {/* IMAGE SIDE (Left) - No Padding */}
+        <div className="w-full lg:w-1/2 h-[400px] lg:h-[600px] relative overflow-hidden group">
+          <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
+          <img 
+            src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1000&auto=format&fit=crop" 
+            alt="Transport"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
+          />
+        </div>
+
+        {/* CONTENT SIDE (Right) - Solid Background */}
+        <div className="w-full lg:w-1/2 bg-gray-50 flex items-center p-8 lg:p-24">
+          <Reveal>
+            <div className="max-w-xl">
+              <div className="w-16 h-16 bg-[#FAD201] rounded-2xl flex items-center justify-center mb-8 text-black shadow-md">
+                <Truck size={32} />
+              </div>
+              <h3 className="text-4xl font-black text-trukGreen mb-6 uppercase">
+                Transport
+              </h3>
+              <p className="text-gray-600 text-xl leading-relaxed mb-10">
+                A modern fleet of temperature-controlled trucks ensuring your produce arrives fresh. We handle full truckloads (FTL) and consolidated cargo across the entire East African region.
+              </p>
+              <Link to="/services" className="inline-flex items-center gap-3 text-trukGreen font-bold uppercase tracking-widest hover:text-[#FAD201] transition-colors border-b-2 border-trukGreen pb-1 hover:border-[#FAD201]">
+                View Transport Details <ArrowRight size={18} />
+              </Link>
             </div>
           </Reveal>
         </div>
+      </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
-          {services.map((service, index) => (
-            <Reveal key={index} delay={index * 0.2}>
-              
-              <div className="group relative h-80 mt-12 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-                
-                {/* Floating Icon */}
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                  <div className="w-24 h-24 bg-trukGreen rounded-full flex items-center justify-center border-8 border-gray-50 shadow-lg transition-transform duration-500 group-hover:-translate-y-2">
-                    {service.icon}
-                  </div>
-                </div>
-
-                {/* BG Image */}
-                <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                   <div 
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                    style={{ backgroundImage: `url('${service.image}')` }}
-                  ></div>
-                  <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-colors duration-500"></div>
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center p-6 pt-12">
-                  <h3 className="text-2xl font-bold text-white mb-4 tracking-wide">{service.title}</h3>
-                  <p className="text-gray-100 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 ease-out">
-                    {service.description}
-                  </p>
-                </div>
-
-              </div>
-            </Reveal>
-          ))}
+      {/* --- SERVICE 2: LOGISTICS (Edge-to-Edge, Swapped) --- */}
+      <div className="w-full flex flex-col lg:flex-row-reverse">
+        
+        {/* IMAGE SIDE (Right) */}
+        <div className="w-full lg:w-1/2 h-[400px] lg:h-[600px] relative overflow-hidden group">
+          <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
+          <img 
+            src="https://africasupplychainmag.com/wp-content/uploads/2023/08/Nigeria-needs-a-logistics-revolution-to-prepare-for-the-free-trade-agreement-1.jpg" 
+            alt="Logistics"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
+          />
         </div>
 
+        {/* CONTENT SIDE (Left) - Darker Background for Contrast */}
+        <div className="w-full lg:w-1/2 bg-[#114232] text-white flex items-center p-8 lg:p-24">
+          <Reveal>
+            <div className="max-w-xl">
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-trukGreen shadow-md">
+                <Warehouse size={32} />
+              </div>
+              <h3 className="text-4xl font-black text-white mb-6 uppercase">
+                Logistics
+              </h3>
+              <p className="text-gray-300 text-xl leading-relaxed mb-10">
+                State-of-the-art cold storage facilities to store your harvest at the perfect temperature. Our inventory management systems ensure zero loss and total visibility.
+              </p>
+              <Link to="/services" className="inline-flex items-center gap-3 text-white font-bold uppercase tracking-widest hover:text-[#FAD201] transition-colors border-b-2 border-white pb-1 hover:border-[#FAD201]">
+                View Logistics Details <ArrowRight size={18} />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
       </div>
+
     </section>
   );
 };
