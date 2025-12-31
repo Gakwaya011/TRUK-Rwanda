@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../assets/Logo-01.png"; // Ensure this matches your file name
+
+// Make sure this path is correct for your PNG logo
+import logo from "../assets/Logo-01.png"; 
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,47 +12,45 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  // Check if we are on the Home Page
   const isHome = location.pathname === "/";
 
+  // Handle Scroll Effect
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => {
+      // If we scroll past 50px, toggle the state
+      setScrolled(window.scrollY > 50);
+    };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // --- DYNAMIC STYLES ---
-
-  // 1. Container: Glass on top, White on scroll
+  
+  // 1. Container Style (Glass vs Solid White)
   const navContainerStyle = isHome && !scrolled
-    ? "bg-black/30 backdrop-blur-md border-white/10 shadow-lg" // Dark Glass
-    : "bg-white shadow-2xl border-white/20"; // Solid White
+    ? "bg-black/20 backdrop-blur-md border-white/10 shadow-lg" // TRANSPARENT GLASS (On Video)
+    : "bg-white shadow-2xl border-white/20"; // SOLID WHITE (On Scroll)
 
-  // 2. Text Color: White on top, Gray on scroll
+  // 2. Text Color (White vs Gray)
   const textColor = isHome && !scrolled
-    ? "text-white hover:text-[#FAD201]"
-    : "text-gray-800 hover:text-trukGreen";
+    ? "text-white hover:text-[#FAD201]" // White text on video
+    : "text-gray-800 hover:text-trukGreen"; // Dark text on white bg
 
-  // 3. Dropdown Icon
+  // 3. Dropdown Icon Color
   const chevronColor = isHome && !scrolled ? "text-white" : "text-gray-600";
-
-  // 4. LOGO FILTER (The Magic Fix 🪄)
-  // If we are transparent, we invert colors to make black text white
-  // 'brightness-0 invert' turns the whole image solid white
-  const logoStyle = isHome && !scrolled
-    ? "brightness-0 invert opacity-100" // Turns Black Logo -> Solid White
-    : ""; // Normal Original Colors
 
   const serviceLinks = [
     { name: "Refrigerated Transport", path: "/services/transport" },
     { name: "Cold Storage", path: "/services/storage" },
-    { name: "Logistics Solutions", path: "/services/logistics" },
+    { name: "Logistics Solutions", path: "/services/logistics" }, // Updated per your new direction
     { name: "Cross-Border Trade", path: "/services/cross-border" },
   ];
 
   return (
     <header className="fixed left-0 right-0 mx-auto top-4 z-50 max-w-[1200px] px-4 sm:px-6 lg:px-8 font-sans">
       
-      {/* --- NAV CARD --- */}
+      {/* --- THE FLOATING NAV CARD --- */}
       <div className={`px-6 py-3 flex items-center justify-between rounded-2xl transition-all duration-500 ease-in-out ${navContainerStyle}`}>
         
         {/* LOGO */}
@@ -58,8 +58,8 @@ export default function Navbar() {
           <img
             src={logo}
             alt="TRUK Logo"
-            // Apply the dynamic filter here
-            className={`h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-all duration-300 ${logoStyle}`} 
+            // We add a brightness filter on the video so the logo pops if it's dark
+            className={`h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300 ${isHome && !scrolled ? "brightness-200" : ""}`} 
           />
         </Link>
 
@@ -139,7 +139,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU (Always white bg for readability) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

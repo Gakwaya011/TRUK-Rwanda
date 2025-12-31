@@ -9,7 +9,7 @@ const BlogPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/blogs')
+    fetch('https://truk-rwanda-backend.onrender.com/api/blogs')
       .then(res => res.json())
       .then(data => {
         setPosts(data);

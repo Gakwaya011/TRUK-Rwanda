@@ -7,7 +7,7 @@ const LatestNews = () => {
   const [stories, setStories] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/blogs')
+    fetch('https://truk-rwanda-backend.onrender.com/api/blogs')
       .then(res => res.json())
       .then(data => {
         // FILTER LOGIC

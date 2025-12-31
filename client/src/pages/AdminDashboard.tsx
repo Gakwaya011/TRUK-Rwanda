@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       // Fetch either jobs or blogs based on the tab
-      const endpoint = activeTab === 'jobs' ? 'http://localhost:5000/api/jobs' : 'http://localhost:5000/api/blogs';
+      const endpoint = activeTab === 'jobs' ? 'https://truk-rwanda-backend.onrender.com/api/jobs' : 'https://truk-rwanda-backend.onrender.com/api/blogs';
       const res = await fetch(endpoint);
       const data = await res.json();
       setItems(data);
@@ -36,8 +36,8 @@ const AdminDashboard = () => {
 
     const token = localStorage.getItem('token');
     const endpoint = activeTab === 'jobs' 
-      ? `http://localhost:5000/api/jobs/${id}` 
-      : `http://localhost:5000/api/blogs/${id}`;
+      ? `https://truk-rwanda-backend.onrender.com/api/jobs/${id}` 
+      : `https://truk-rwanda-backend.onrender.com/api/blogs/${id}`;
 
     try {
       const res = await fetch(endpoint, {

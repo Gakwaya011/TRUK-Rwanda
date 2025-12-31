@@ -24,7 +24,7 @@ const EditBlog = () => {
 
   // 1. Fetch existing data
   useEffect(() => {
-    fetch(`http://localhost:5000/api/blogs/${id}`)
+    fetch(`https://truk-rwanda-backend.onrender.com/api/blogs/${id}`)
       .then(res => res.json())
       .then(data => {
         setFormData({
@@ -74,7 +74,7 @@ const EditBlog = () => {
       }
 
       // 4. Send Request
-      const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const res = await fetch(`https://truk-rwanda-backend.onrender.com/api/blogs/${id}`, {
         method: 'PUT',
         headers: { 
           'Authorization': `Bearer ${token}` 

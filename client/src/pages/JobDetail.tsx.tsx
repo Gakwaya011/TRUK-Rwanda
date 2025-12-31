@@ -10,7 +10,7 @@ const JobDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/jobs/${id}`) // Using your backend API
+    fetch(`https://truk-rwanda-backend.onrender.com/api/jobs/${id}`) // Using your backend API
       .then(res => res.json())
       .then(data => {
         setJob(data); // Ensure your backend returns the single job object
