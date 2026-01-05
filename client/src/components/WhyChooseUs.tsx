@@ -12,8 +12,6 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    // CHANGED: bg-[#114232] (This is the official TRUK Green)
-    // It is lighter than the black-green, but still rich and premium.
     <section className="py-24 bg-[#114232] text-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
         
@@ -26,9 +24,13 @@ const WhyChooseUs = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-12">
           {features.map((feature, index) => (
-            <Reveal key={index} delay={index * 0.1}>
-              <div className="flex flex-col items-center group">
-                
+            
+            // FIX: Added width="100%" here
+            // This ensures the animation container fills the grid cell, 
+            // allowing the internal "items-center" to actually center the content.
+            <Reveal key={index} delay={index * 0.1} width="100%">
+              
+              <div className="flex flex-col items-center group mx-auto"> 
                 {/* Icon: White Outline, fills with Yellow on hover */}
                 <div className="w-20 h-20 rounded-full border-2 border-white/20 group-hover:bg-[#FAD201] group-hover:border-[#FAD201] group-hover:text-black flex items-center justify-center mb-6 transition-all duration-500">
                   {feature.icon}
@@ -39,6 +41,7 @@ const WhyChooseUs = () => {
                   {feature.desc}
                 </p>
               </div>
+              
             </Reveal>
           ))}
         </div>

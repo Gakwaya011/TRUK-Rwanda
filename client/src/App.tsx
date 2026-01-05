@@ -27,6 +27,7 @@ import LatestNews from './components/LatestNews.tsx';
 import Navbar from './components/Navbar.tsx';
 import Partners from './components/Partners.tsx';
 import Preloader from './components/Preloader.tsx';
+import NotFound from './pages/NotFound.tsx';
 
 const Home = () => (
   <>
@@ -66,6 +67,7 @@ function App() {
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/admin/edit-blog/:id" element={<EditBlog />} />
         <Route path="/careers/:id" element={<JobDetail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
   );

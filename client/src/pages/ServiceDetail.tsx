@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, AlertTriangle } from 'lucide-react';
 
 // Import images
 import truckImage from '../assets/service-truck.jpg';
 import farmerImage from '../assets/service-farmer.jpg';
 
-// DATA STORE
-const serviceDetails: any = {
+// DATA STORE - KEYS MATCH NAVBAR AND SERVICESPAGE
+const serviceDetails: Record<string, any> = {
   "transport": {
     title: "Refrigerated Transport",
     image: truckImage,
@@ -41,60 +41,88 @@ const serviceDetails: any = {
 };
 
 const ServiceDetail = () => {
-  const { serviceId } = useParams(); // Get the ID from the URL
-  const service = serviceDetails[serviceId || "transport"]; // Fallback to transport if not found
+  const { serviceId } = useParams();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [serviceId]);
+
+  // Safely get the service
+  const service = serviceId ? serviceDetails[serviceId] : undefined;
+
+  // SAFETY CHECK: Prevents Crash
+  if (!service) {
+    return (
+      <div className="font-sans bg-gray-50 min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-grow flex flex-col items-center justify-center text-center px-6">
+            <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-6 text-gray-400">
+                <AlertTriangle size={32} />
+            </div>
+            <h2 className="text-3xl font-black text-gray-900 mb-4">Service Not Found</h2>
+            <p className="text-gray-600 mb-8 max-w-md">
+                The service page you are looking for does not exist or has been moved.
+            </p>
+            <Link to="/services" className="inline-flex items-center px-8 py-3 bg-trukGreen text-white rounded-xl font-bold hover:bg-[#0d3326] transition-colors">
+                <ArrowLeft size={18} className="mr-2"/> Back to Services
+            </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="font-sans bg-white">
       <Navbar />
       
-      {/* HEADER */}
+      {/* HERO */}
       <div className="relative h-[60vh] min-h-[400px]">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${service.image}')` }}
-        >
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${service.image}')` }}>
             <div className="absolute inset-0 bg-black/60"></div>
         </div>
         <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-6 pt-20">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">{service.title}</h1>
-            <p className="text-xl text-gray-200 max-w-2xl">{service.subtitle}</p>
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 uppercase tracking-tight drop-shadow-xl">{service.title}</h1>
+            <div className="h-1.5 w-24 bg-[#FAD201] rounded-full mb-6"></div>
+            <p className="text-xl text-gray-200 max-w-2xl font-medium leading-relaxed">{service.subtitle}</p>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="max-w-4xl mx-auto px-6 py-20">
-        
-        <Link to="/services" className="inline-flex items-center text-trukGreen font-bold mb-8 hover:underline">
+      <div className="max-w-5xl mx-auto px-6 py-20">
+        <Link to="/services" className="inline-flex items-center text-gray-500 font-bold mb-8 hover:text-trukGreen transition-colors">
             <ArrowLeft size={20} className="mr-2"/> Back to Services
         </Link>
 
-        <div className="prose prose-lg max-w-none">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Overview</h2>
-            <p className="text-gray-700 leading-relaxed text-lg mb-10">
-                {service.content}
-            </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-2">
+                <h2 className="text-3xl font-bold text-trukGreen mb-6">Overview</h2>
+                <p className="text-gray-600 leading-relaxed text-lg mb-10 whitespace-pre-line">{service.content}</p>
 
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Benefits</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {service.benefits.map((benefit: string, idx: number) => (
-                    <div key={idx} className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                        <CheckCircle className="text-trukGreen mr-3" size={24} />
-                        <span className="font-bold text-gray-700">{benefit}</span>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Benefits</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {service.benefits.map((benefit: string, idx: number) => (
+                        <div key={idx} className="flex items-start p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-trukGreen/30 transition-colors">
+                            <CheckCircle className="text-[#FAD201] mr-3 mt-0.5 flex-shrink-0" size={20} />
+                            <span className="font-bold text-gray-700">{benefit}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="lg:col-span-1">
+                <div className="bg-[#114232] rounded-3xl p-8 text-white sticky top-32 shadow-xl">
+                    <h3 className="text-2xl font-bold mb-4">Ready to move?</h3>
+                    <p className="mb-8 text-gray-300 leading-relaxed">Get a tailored quote for {service.title} today. Our team is ready to assist.</p>
+                    <Link to="/contact" className="block w-full text-center bg-[#FAD201] text-[#114232] font-black py-4 px-8 rounded-xl hover:bg-white transition-all shadow-lg uppercase tracking-wide text-sm">Get a Quote</Link>
+                    <div className="mt-6 text-center border-t border-white/10 pt-6">
+                        <p className="text-sm text-gray-400 mb-1">Need immediate help?</p>
+                        <p className="font-bold text-lg">+250 788 123 456</p>
                     </div>
-                ))}
+                </div>
             </div>
         </div>
-
-        {/* CTA */}
-        <div className="mt-16 p-8 bg-trukGreen rounded-2xl text-center text-white">
-            <h3 className="text-2xl font-bold mb-4">Ready to get started?</h3>
-            <p className="mb-8">Contact us today for a quote on {service.title}.</p>
-            <Link to="/contact" className="inline-block bg-[#FAD201] text-black font-bold py-3 px-8 rounded-full hover:bg-white transition">
-                Get a Quote
-            </Link>
-        </div>
-
       </div>
 
       <Footer />

@@ -3,11 +3,15 @@ import { Truck, Warehouse, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Reveal } from './Reveal'; 
 
+// 1. IMPORT THE LOCAL IMAGE HERE
+// (Make sure the filename matches exactly what is in your folder)
+import truckImg from '../assets/truck-highway-sunny-sky.jpg';
+
 const ServicesSection = () => {
   return (
     <section id="services" className="bg-white">
       
-      {/* HEADER SECTION (Still needs some padding to be readable) */}
+      {/* HEADER SECTION */}
       <div className="py-20 text-center px-6">
         <Reveal width="100%">
            <h2 className="text-4xl md:text-5xl font-black text-trukGreen uppercase tracking-tight mb-4">
@@ -20,20 +24,22 @@ const ServicesSection = () => {
         </Reveal>
       </div>
 
-      {/* --- SERVICE 1: TRANSPORT (Edge-to-Edge) --- */}
+      {/* --- SERVICE 1: TRANSPORT --- */}
       <div className="w-full flex flex-col lg:flex-row">
         
-        {/* IMAGE SIDE (Left) - No Padding */}
+        {/* IMAGE SIDE (Left) */}
         <div className="w-full lg:w-1/2 h-[400px] lg:h-[600px] relative overflow-hidden group">
           <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
+          
+          {/* 2. USE THE IMPORTED VARIABLE HERE */}
           <img 
-            src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1000&auto=format&fit=crop" 
+            src={truckImg} 
             alt="Transport"
             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
           />
         </div>
 
-        {/* CONTENT SIDE (Right) - Solid Background */}
+        {/* CONTENT SIDE (Right) */}
         <div className="w-full lg:w-1/2 bg-gray-50 flex items-center p-8 lg:p-24">
           <Reveal>
             <div className="max-w-xl">
@@ -54,7 +60,7 @@ const ServicesSection = () => {
         </div>
       </div>
 
-      {/* --- SERVICE 2: LOGISTICS (Edge-to-Edge, Swapped) --- */}
+      {/* --- SERVICE 2: LOGISTICS --- */}
       <div className="w-full flex flex-col lg:flex-row-reverse">
         
         {/* IMAGE SIDE (Right) */}
@@ -67,7 +73,7 @@ const ServicesSection = () => {
           />
         </div>
 
-        {/* CONTENT SIDE (Left) - Darker Background for Contrast */}
+        {/* CONTENT SIDE (Left) */}
         <div className="w-full lg:w-1/2 bg-[#114232] text-white flex items-center p-8 lg:p-24">
           <Reveal>
             <div className="max-w-xl">

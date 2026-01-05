@@ -1,128 +1,169 @@
+import React, { useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Rocket, Binoculars, ThumbsUp, ShieldCheck, Lightbulb, HeartHandshake, Award } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Rocket, Binoculars, ThumbsUp, ShieldCheck, Lightbulb, HeartHandshake, Award, Linkedin, TrendingUp, Users, Globe } from 'lucide-react';
+import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { Reveal } from '../components/Reveal'; 
 
-// IMPORT THE BACKGROUND IMAGE
-import valuesBg from '../assets/values-bg.jpg';
+// --- ASSETS ---
+import aboutPage from '../assets/aboutPage.jpg';
+
+// 1. HERO IMAGE
+const HERO_IMAGE = aboutPage; 
+
+// 2. VALUES IMAGE (Dark Night Truck)
+const VALUES_IMAGE = "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=2070&auto=format&fit=crop";
+
+// --- COUNTER COMPONENT ---
+const Counter = ({ value, suffix = "" }: { value: number, suffix?: string }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, { damping: 30, stiffness: 100 });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (isInView) {
+      motionValue.set(value);
+    }
+  }, [isInView, value, motionValue]);
+
+  useEffect(() => {
+    return springValue.on("change", (latest) => {
+      if (ref.current) {
+        ref.current.textContent = latest.toFixed(0) + suffix;
+      }
+    });
+  }, [springValue, suffix]);
+
+  return <span ref={ref} />;
+};
+
+// --- DATA ---
+const values = [
+  { title: 'Reliability', icon: <ThumbsUp size={28} />, desc: 'Consistent performance you can trust, every single time.' },
+  { title: 'Integrity', icon: <ShieldCheck size={28} />, desc: 'Honesty and transparency in all our business dealings.' },
+  { title: 'Innovation', icon: <Lightbulb size={28} />, desc: 'Constantly finding better, smarter ways to serve you.' },
+  { title: 'Commitment', icon: <HeartHandshake size={28} />, desc: 'Deeply invested in the success of our clients and community.' },
+  { title: 'Excellence', icon: <Award size={28} />, desc: 'Striving for the highest quality standards in everything we do.' },
+];
+
+const team = [
+  { name: 'Herve Tuyishime', role: 'CEO', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop' },
+  { name: 'Gilles Uwimpaye', role: 'CFO', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop' },
+  { name: 'Nsimba Samuel', role: 'Operations Manager', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=1000&auto=format&fit=crop' },
+  { name: 'Rukinga Theophille', role: 'Fleet Manager', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop' },
+];
+
+const stats = [
+  { icon: <TrendingUp />, value: 2020, suffix: "", label: "Founded" },
+  { icon: <Users />, value: 50, suffix: "+", label: "Expert Team Members" },
+  { icon: <Globe />, value: 3, suffix: "", label: "Countries Served" },
+  { icon: <Award />, value: 100, suffix: "%", label: "Client Satisfaction Goal" },
+];
 
 const AboutPage = () => {
-  
-  const values = [
-    { title: 'Reliability', icon: <ThumbsUp size={32} /> },
-    { title: 'Integrity', icon: <ShieldCheck size={32} /> },
-    { title: 'Innovation', icon: <Lightbulb size={32} /> },
-    { title: 'Customer Commitment', icon: <HeartHandshake size={32} /> },
-    { title: 'Excellence', icon: <Award size={32} /> },
-  ];
-
-  const team = [
-    { 
-      name: 'Herve Tuyishime', 
-      role: 'CEO', 
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop' 
-    },
-    { 
-      name: 'Gilles Uwimpaye', 
-      role: 'CFO', 
-      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop' 
-    },
-    { 
-      name: 'Nsimba Samuel', 
-      role: 'Operations Manager', 
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=1000&auto=format&fit=crop' 
-    },
-    { 
-      name: 'Rukinga Theophille', 
-      role: 'Fleet Manager', 
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop' 
-    },
-  ];
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]); 
 
   return (
     <div className="font-sans bg-white">
+      <Navbar />
       
       {/* --- HERO SECTION --- */}
-      <div className="relative w-full h-[65vh] min-h-[500px] flex flex-col bg-white">
+      <div className="relative w-full h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-[#0d3326]">
         <motion.div 
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          style={{ y, backgroundImage: `url('${HERO_IMAGE}')` }}
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2940&auto=format&fit=crop')" }}
-        >
-          <div className="absolute inset-0 bg-black/60"></div>
-        </motion.div>
+        />
+        
+        {/* 1. Subtle Green Tint (40% Opacity) */}
+        <div className="absolute inset-0 bg-[#0d3326]/40"></div>
+        
+        {/* 2. Gradient Overlay for Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d3326] via-transparent to-black/30"></div>
 
-        <div className="relative z-50 pt-6 px-4 sm:px-6 lg:px-8 w-full">
-          <Navbar />
-        </div>
-
-        <div className="relative z-10 flex-grow flex items-center justify-center pb-10">
-          <Reveal delay={0.2}>
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white uppercase tracking-widest drop-shadow-2xl mt-12">
-              About Us
+        <div className="relative z-10 text-center px-4 mt-20">
+          <Reveal width="100%">
+            <h1 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter mb-6 drop-shadow-2xl leading-none">
+              About <span className="text-[#FAD201]">TRUK</span>
             </h1>
+            <div className="h-2 w-24 bg-[#FAD201] mx-auto rounded-full mb-8"></div>
+            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto font-light leading-relaxed drop-shadow-lg">
+               Pioneering cold-chain logistics in East Africa.
+            </p>
           </Reveal>
         </div>
       </div>
 
+      {/* --- STORY & STATS SECTION --- */}
+      <section className="relative py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left: The Story */}
+            <div>
+                <Reveal>
+                    <h2 className="text-3xl font-bold text-trukGreen mb-6 uppercase tracking-tight">Our Journey</h2>
+                </Reveal>
+                <Reveal delay={0.2}>
+                    <div className="prose prose-lg text-gray-700 leading-relaxed">
+                        <p className="mb-6">
+                            TRUK Rwanda Ltd was born from a critical need: reliable, temperature-controlled transport in East Africa. Formerly known as Paniel Transport and Logistics, we established ourselves in **2020** with a clear mission to reduce food waste and support agribusiness growth.
+                        </p>
+                        <p>
+                            Today, we have grown into one of Rwanda's most trusted logistics partners, combining state-of-the-art refrigerated fleet technology with deep local expertise. Our success is built on the understanding that every shipment we handle is vital to our client's business.
+                        </p>
+                    </div>
+                </Reveal>
+            </div>
 
-      {/* --- WHO WE ARE --- */}
-      <section className="relative py-24 bg-white overflow-hidden">
-        <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none bg-repeat"
-          style={{ 
-            backgroundImage: "url('https://img.freepik.com/premium-vector/vegetables-seamless-pattern-healthy-food-background-vector-illustration_536356-429.jpg')",
-            backgroundSize: "400px" 
-          }}
-        ></div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <Reveal width="100%">
-            <h2 className="text-3xl font-bold text-trukGreen mb-8 uppercase tracking-tight">Who We Are</h2>
-          </Reveal>
-          <Reveal width="100%" delay={0.2}>
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-medium">
-              TRUK Rwanda Ltd is a cold-chain logistics company dedicated to providing high-quality,
-              temperature-controlled transportation and storage solutions. Formerly known as Paniel
-              Transport and Logistics, the company was established in 2020 and has grown into one
-              of Rwanda's most trusted logistics partners.
-            </p>
-          </Reveal>
+            {/* Right: Stats Grid (ANIMATED) */}
+            <div className="grid grid-cols-2 gap-6">
+                {stats.map((stat, idx) => (
+                    <Reveal key={idx} delay={idx * 0.1}>
+                        <div className="bg-gray-50 p-8 rounded-3xl text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="text-trukGreen mb-4 flex justify-center group-hover:scale-110 transition-transform">
+                                {React.cloneElement(stat.icon, { size: 32 })}
+                            </div>
+                            
+                            {/* Animated Number */}
+                            <div className="text-4xl font-black text-gray-900 mb-2">
+                                <Counter value={stat.value} suffix={stat.suffix} />
+                            </div>
+                            
+                            <div className="text-sm font-bold text-gray-500 uppercase tracking-wider">{stat.label}</div>
+                        </div>
+                    </Reveal>
+                ))}
+            </div>
         </div>
       </section>
-
 
       {/* --- MISSION & VISION --- */}
       <section className="relative py-24 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-10">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
           
           <Reveal width="100%">
-            <div className="bg-[#EAEAEA] rounded-3xl p-10 text-center relative shadow-sm hover:shadow-md transition-shadow mt-10 md:mt-0">
-              <div className="w-24 h-24 bg-trukGreen rounded-full flex items-center justify-center mx-auto -mt-20 border-8 border-gray-50 mb-8 shadow-lg">
-                <Rocket className="text-white" size={40} />
+            <div className="bg-white p-10 rounded-[2rem] shadow-xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-trukGreen/10 rounded-bl-full -mr-8 -mt-8 transition-all group-hover:bg-trukGreen/20"></div>
+              <div className="w-16 h-16 bg-trukGreen text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg relative z-10">
+                <Rocket size={32} />
               </div>
-              <h3 className="text-2xl font-bold text-trukGreen mb-4">Our Mission</h3>
-              <p className="text-gray-700 font-medium leading-relaxed">
-                To deliver safe, efficient, and reliable cold-chain logistics solutions that
-                preserve product quality, reduce food waste, and support business growth
-                across the region.
+              <h3 className="text-2xl font-bold text-trukGreen mb-4 uppercase tracking-wide">Our Mission</h3>
+              <p className="text-gray-700 text-lg leading-relaxed font-medium relative z-10">
+                To deliver safe, efficient, and reliable cold-chain logistics solutions that preserve product quality, reduce food waste, and support business growth across the region.
               </p>
             </div>
           </Reveal>
 
-          <Reveal width="100%" delay={0.3}>
-            <div className="bg-[#EAEAEA] rounded-3xl p-10 text-center relative shadow-sm hover:shadow-md transition-shadow mt-10 md:mt-0">
-              <div className="w-24 h-24 bg-trukGreen rounded-full flex items-center justify-center mx-auto -mt-20 border-8 border-gray-50 mb-8 shadow-lg">
-                <Binoculars className="text-white" size={40} />
+          <Reveal width="100%" delay={0.2}>
+            <div className="bg-white p-10 rounded-[2rem] shadow-xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#FAD201]/20 rounded-bl-full -mr-8 -mt-8 transition-all group-hover:bg-[#FAD201]/30"></div>
+              <div className="w-16 h-16 bg-[#FAD201] text-trukGreen rounded-2xl flex items-center justify-center mb-8 shadow-lg relative z-10">
+                <Binoculars size={32} />
               </div>
-              <h3 className="text-2xl font-bold text-trukGreen mb-4">Our Vision</h3>
-              <p className="text-gray-700 font-medium leading-relaxed">
-                To become East Africa's most trusted cold-chain logistics partner, driving
-                innovation and empowering farmers, agribusinesses, and industries through
-                world-class logistics solutions.
+              <h3 className="text-2xl font-bold text-trukGreen mb-4 uppercase tracking-wide">Our Vision</h3>
+              <p className="text-gray-700 text-lg leading-relaxed font-medium relative z-10">
+                To become East Africa's most trusted cold-chain logistics partner, driving innovation and empowering farmers, agribusinesses, and industries through world-class solutions.
               </p>
             </div>
           </Reveal>
@@ -130,73 +171,84 @@ const AboutPage = () => {
         </div>
       </section>
 
+      {/* --- OUR VALUES (Split Layout - Dark) --- */}
+      <section className="relative py-24 bg-[#0d3326] overflow-hidden">
+         {/* Background Image Panel */}
+         <div 
+            className="absolute top-0 right-0 w-full lg:w-1/2 h-full bg-cover bg-center opacity-10 lg:opacity-60" 
+            style={{ backgroundImage: `url('${VALUES_IMAGE}')` }}
+         >
+             <div className="absolute inset-0 bg-[#0d3326]/60 lg:bg-[#0d3326]/80 lg:bg-gradient-to-r lg:from-[#0d3326] lg:to-transparent"></div>
+         </div>
 
-      {/* --- OUR VALUES (FIXED BACKGROUND REVEAL) --- */}
-      {/* 'bg-fixed' keeps the image static while the page scrolls, creating the window effect */}
-      <section 
-        className="relative py-32 bg-fixed bg-center bg-cover"
-        style={{ backgroundImage: `url(${valuesBg})` }}
-      >
-        {/* Dark Overlay - Makes text readable */}
-        <div className="absolute inset-0 bg-black/70"></div>
+         <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+             
+             {/* Left: Title & Intro */}
+             <div className="text-white">
+                 <Reveal>
+                     <h2 className="text-4xl font-extrabold mb-6 uppercase tracking-tight">Our Core Values</h2>
+                     <div className="h-1.5 w-20 bg-[#FAD201] rounded-full mb-8"></div>
+                 </Reveal>
+                 <Reveal delay={0.2}>
+                     <p className="text-xl text-gray-300 font-light leading-relaxed">
+                         These principles guide every decision we make. They are the foundation of our culture and our promise to you.
+                     </p>
+                 </Reveal>
+             </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center text-white">
-          
-          <Reveal width="100%">
-            <h2 className="text-4xl font-extrabold mb-16 uppercase tracking-tight drop-shadow-lg">
-              Our Values
-            </h2>
-          </Reveal>
-          
-          <div className="flex flex-wrap justify-center gap-10">
-            {values.map((val, idx) => (
-              <Reveal key={idx} delay={idx * 0.15}>
-                {/* Glassmorphism Card Effect:
-                   - bg-white/10: Slight white tint
-                   - backdrop-blur-sm: Blurs the image behind the card
-                   - border-white/20: Subtle border
-                */}
-                <div className="flex flex-col items-center justify-center p-6 w-40 md:w-48 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 group hover:-translate-y-2">
-                  
-                  {/* Icon */}
-                  <div className="text-trukYellow mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                    {val.icon}
-                  </div>
-                  
-                  {/* Text */}
-                  <span className="font-bold text-white text-sm md:text-base tracking-wide text-center">
-                    {val.title}
-                  </span>
-
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+             {/* Right: Floating Cards List */}
+             <div className="grid gap-6">
+                 {values.map((val, idx) => (
+                     <Reveal key={idx} delay={idx * 0.1} width="100%">
+                         <div className="flex items-start gap-6 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20 transition-all duration-300 hover:-translate-x-2 group">
+                             <div className="text-[#FAD201] mt-1 flex-shrink-0 group-hover:scale-110 transition-transform">
+                                 {val.icon}
+                             </div>
+                             <div>
+                                 <h3 className="text-xl font-bold text-white mb-2">{val.title}</h3>
+                                 <p className="text-gray-300 text-sm leading-relaxed">{val.desc}</p>
+                             </div>
+                         </div>
+                     </Reveal>
+                 ))}
+             </div>
+         </div>
       </section>
-
 
       {/* --- MEET OUR TEAM --- */}
-      <section className="py-24 bg-[#EAEAEA]">
+      <section className="py-32 bg-gray-100">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <Reveal width="100%">
-            <h2 className="text-3xl font-bold text-trukGreen mb-16 uppercase tracking-tight">Meet Our Team</h2>
+            <h2 className="text-3xl font-bold text-trukGreen mb-4 uppercase tracking-tight">Leadership Team</h2>
+            <div className="h-1.5 w-20 bg-[#FAD201] mx-auto rounded-full mb-16"></div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {team.map((member, idx) => (
-              <Reveal key={idx} delay={idx * 0.2}>
-                <div className="flex flex-col items-center group">
-                  <div className="relative w-48 h-48 mb-6 transition-transform duration-300 transform group-hover:scale-105">
-                    <div className="absolute inset-0 rounded-full border-4 border-[#116D3B] z-20 pointer-events-none"></div>
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-full h-full rounded-full object-cover shadow-xl border-4 border-white"
-                    />
+              <Reveal key={idx} delay={idx * 0.15}>
+                <div className="group relative overflow-hidden rounded-[2rem] shadow-xl aspect-[3/4]">
+                  {/* Image */}
+                  <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
+                  />
+                  
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d3326] via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                  
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 w-full p-8 text-left transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="font-bold text-white text-xl mb-1">{member.name}</h3>
+                    <p className="text-[#FAD201] text-sm font-bold uppercase tracking-wider mb-4">{member.role}</p>
+                    
+                    {/* Social Icon */}
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                      <a href="#" className="inline-flex p-2 bg-white/20 rounded-full text-white hover:bg-[#FAD201] hover:text-trukGreen transition-colors">
+                        <Linkedin size={18} />
+                      </a>
+                    </div>
                   </div>
-                  <h3 className="font-bold text-gray-900 text-lg">{member.name}</h3>
-                  <p className="text-gray-600 text-sm font-medium">{member.role}</p>
                 </div>
               </Reveal>
             ))}
