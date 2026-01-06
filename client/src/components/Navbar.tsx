@@ -32,11 +32,10 @@ export default function Navbar() {
   const chevronColor = isHome && !scrolled ? "text-white" : "text-gray-600";
   const currentLogo = isHome && !scrolled ? logoLight : logoDark;
 
-  // --- UPDATED LINKS TO MATCH SERVICE DATA EXACTLY ---
   const serviceLinks = [
     { name: "Refrigerated Transport", path: "/services/transport" },
     { name: "Cold Storage", path: "/services/storage" },
-    { name: "Farm-to-Market", path: "/services/farm-to-market" }, // Added this to match data
+    { name: "Farm-to-Market", path: "/services/farm-to-market" },
     { name: "Cross-Border Trade", path: "/services/cross-border" },
   ];
 
@@ -53,6 +52,9 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center space-x-8">
           <Link to="/" className={`text-[13px] font-bold uppercase tracking-wide transition ${textColor}`}>Home</Link>
           <Link to="/about" className={`text-[13px] font-bold uppercase tracking-wide transition ${textColor}`}>About Us</Link>
+          
+          {/* RESTORED NEWS LINK */}
+          <Link to="/blog" className={`text-[13px] font-bold uppercase tracking-wide transition ${textColor}`}>News</Link>
 
           {/* DROPDOWN */}
           <div 
@@ -115,6 +117,9 @@ export default function Navbar() {
               <Link to="/" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>Home</Link>
               <Link to="/about" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>About Us</Link>
               
+              {/* RESTORED NEWS LINK (MOBILE) */}
+              <Link to="/blog" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>News</Link>
+
               <div className="pl-4 border-l-2 border-gray-100 space-y-3">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Our Services</p>
                 {serviceLinks.map((subItem) => (
