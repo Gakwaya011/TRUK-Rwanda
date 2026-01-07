@@ -21,9 +21,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // FIX 1: REDUCED VERTICAL PADDING (py-2 instead of py-3)
+  // This keeps the navbar height "compact" even though we grow the logo.
   const navContainerStyle = isHome && !scrolled
-    ? "bg-black/30 backdrop-blur-md border-white/10 shadow-lg"
-    : "bg-white shadow-2xl border-white/20";
+    ? "bg-black/30 backdrop-blur-md border-white/10 shadow-lg py-2" // Changed py-3 to py-2
+    : "bg-white shadow-2xl border-white/20 py-2"; // Changed py-3 to py-2
 
   const textColor = isHome && !scrolled
     ? "text-white hover:text-[#FAD201]"
@@ -41,11 +43,18 @@ export default function Navbar() {
 
   return (
     <header className="fixed left-0 right-0 mx-auto top-4 z-50 max-w-[1200px] px-4 sm:px-6 lg:px-8 font-sans">
-      <div className={`px-6 py-3 flex items-center justify-between rounded-2xl transition-all duration-500 ease-in-out ${navContainerStyle}`}>
+      <div className={`px-6 flex items-center justify-between rounded-2xl transition-all duration-500 ease-in-out ${navContainerStyle}`}>
         
-        {/* LOGO */}
+        {/* LOGO SECTION */}
         <Link to="/" className="flex items-center gap-3 group">
-          <img src={currentLogo} alt="TRUK Logo" className="h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
+          <img 
+            src={currentLogo} 
+            alt="TRUK Logo" 
+            // FIX 2: MAXIMIZED LOGO SIZE
+            // h-12 (Mobile) & h-14 (Desktop) 
+            // This is "Bigger" than original, but fits the new slim padding perfectly.
+            className="h-12 md:h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-300" 
+          />
         </Link>
 
         {/* DESKTOP NAV */}
@@ -53,7 +62,6 @@ export default function Navbar() {
           <Link to="/" className={`text-[13px] font-bold uppercase tracking-wide transition ${textColor}`}>Home</Link>
           <Link to="/about" className={`text-[13px] font-bold uppercase tracking-wide transition ${textColor}`}>About Us</Link>
           
-          {/* RESTORED NEWS LINK */}
           <Link to="/blog" className={`text-[13px] font-bold uppercase tracking-wide transition ${textColor}`}>News</Link>
 
           {/* DROPDOWN */}
@@ -117,7 +125,6 @@ export default function Navbar() {
               <Link to="/" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>Home</Link>
               <Link to="/about" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>About Us</Link>
               
-              {/* RESTORED NEWS LINK (MOBILE) */}
               <Link to="/blog" className="block text-sm font-bold text-gray-800" onClick={() => setIsOpen(false)}>News</Link>
 
               <div className="pl-4 border-l-2 border-gray-100 space-y-3">
