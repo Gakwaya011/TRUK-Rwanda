@@ -7,7 +7,6 @@ const ContactSection = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Opens the user's email client with the message pre-filled
     window.location.href = `mailto:info@trukrwanda.com?subject=Inquiry from ${formData.name}&body=${formData.message}%0D%0A%0D%0APhone: ${formData.phone}`;
   };
 
@@ -52,13 +51,15 @@ const ContactSection = () => {
                         </p>
 
                         <div className="space-y-8">
+                            {/* UPDATED PHONE SECTION */}
                             <div className="flex items-start gap-4">
                                 <div className="p-3 bg-white/10 rounded-lg text-[#FAD201]">
                                     <Phone size={24} />
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Call Us</p>
-                                    <p className="font-semibold text-lg">+250 788 123 456</p>
+                                    <p className="font-black text-2xl text-[#FAD201]">6030 <span className="text-xs text-white/60 font-medium align-middle">TOLL FREE</span></p>
+                                    <p className="font-medium text-gray-300 mt-1">+250 788 254 169</p>
                                 </div>
                             </div>
 
@@ -78,7 +79,6 @@ const ContactSection = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Visit Us</p>
-                                    {/* UPDATED ADDRESS HERE */}
                                     <p className="font-semibold text-lg leading-relaxed">
                                         28 KG11AVE,<br/>
                                         Opposite Amahoro Stadium

@@ -29,14 +29,24 @@ const Footer = () => {
           </div>
 
           {/* RIGHT: Contact Details with Icons */}
-          <div className="flex flex-col items-center md:items-end space-y-4 text-xs text-gray-300">
+          <div className="flex flex-col items-center md:items-end space-y-5 text-xs text-gray-300">
             
-            {/* Phone */}
-            <div className="flex items-center gap-3 md:flex-row-reverse">
-              <div className="p-1.5 bg-white/5 rounded-md text-[#FAD201]">
+            {/* Phone - CLEANER LAYOUT */}
+            <div className="flex items-start gap-3 md:flex-row-reverse text-center md:text-right">
+              <div className="p-1.5 bg-white/5 rounded-md text-[#FAD201] mt-0.5">
                 <Phone size={14} />
               </div>
-              <span className="font-medium tracking-wide">+250 788 254 169</span>
+              <div className="flex flex-col md:items-end gap-1.5">
+                {/* Toll Free Line with Badge */}
+                <div className="flex items-center gap-2">
+                   <span className="text-[9px] border border-[#FAD201] text-[#FAD201] px-1.5 py-px rounded uppercase tracking-wider font-bold">Toll Free</span>
+                   <span className="font-bold text-white text-sm tracking-wide">6030</span>
+                </div>
+                {/* Mobile Line */}
+                <a href="tel:+250788254169" className="font-medium text-gray-400 hover:text-white transition-colors tracking-wide">
+                  +250 788 254 169
+                </a>
+              </div>
             </div>
 
             {/* Email */}

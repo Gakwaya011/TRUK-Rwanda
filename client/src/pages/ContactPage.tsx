@@ -16,20 +16,16 @@ const ContactPage = () => {
     <div className="font-sans bg-gray-100">
       <Navbar />
       
-      {/* --- HERO SECTION (Fixed & Reliable Image) --- */}
+      {/* --- HERO SECTION --- */}
       <div className="relative w-full h-[55vh] min-h-[450px] flex flex-col justify-center items-center overflow-hidden bg-[#0d3326]">
         
-        {/* 1. REAL IMAGE TAG (Guarantees visibility) */}
         <img 
            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" 
            alt="Global Connections"
            className="absolute inset-0 w-full h-full object-cover opacity-40" 
         />
-
-        {/* 2. GRADIENT OVERLAY (For text readability) */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d3326]/80 via-transparent to-[#0d3326]/90"></div>
 
-        {/* 3. HERO CONTENT */}
         <div className="relative z-10 text-center px-4 mt-10">
           <Reveal width="100%">
             <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-wider mb-4 drop-shadow-2xl">
@@ -46,7 +42,7 @@ const ContactPage = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-20 -mt-20 mb-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
           
-          {/* Card 1: Phone */}
+          {/* Card 1: Phone (UPDATED) */}
           <Reveal delay={0.1}>
             <div className="bg-white p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center h-full">
               <div className="w-16 h-16 bg-trukGreen/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#FAD201] transition-colors duration-300">
@@ -54,7 +50,11 @@ const ContactPage = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2 uppercase tracking-wide">Call Us</h3>
               <p className="text-gray-500 text-sm mb-4 font-medium">Mon-Fri from 8am to 6pm</p>
-              <p className="text-trukGreen font-black text-xl mt-auto">+250 788 123 456</p>
+              
+              <div className="mt-auto flex flex-col items-center gap-1">
+                <p className="text-trukGreen font-black text-3xl">6030 <span className="text-xs text-gray-400 font-bold uppercase align-middle ml-1">Toll Free</span></p>
+                <p className="text-gray-600 font-bold text-lg">+250 788 254 169</p>
+              </div>
             </div>
           </Reveal>
 
@@ -92,13 +92,10 @@ const ContactPage = () => {
             
             {/* LEFT SIDE: Visual Context with Frost Effect */}
             <div className="lg:w-5/12 relative bg-[#114232] text-white p-12 lg:p-16 flex flex-col justify-between overflow-hidden">
-              
-              {/* Subtle Texture Overlay */}
               <div 
                 className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none" 
                 style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/frost.png')" }}
               ></div>
-               {/* Warm Gradient at bottom */}
                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#FAD201]/20 to-transparent opacity-60"></div>
               
               <div className="relative z-10">

@@ -1,18 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Rocket, Binoculars, ThumbsUp, ShieldCheck, Lightbulb, HeartHandshake, Award, Linkedin, TrendingUp, Users, Globe } from 'lucide-react';
+import { Rocket, Binoculars, ThumbsUp, ShieldCheck, Lightbulb, HeartHandshake, Award, TrendingUp, Users, Globe, Linkedin } from 'lucide-react';
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { Reveal } from '../components/Reveal'; 
 
-// --- ASSETS ---
+// --- 1. GLOBAL ASSETS ---
 import aboutPage from '../assets/aboutPage.jpg';
-
-// 1. HERO IMAGE
 const HERO_IMAGE = aboutPage; 
-
-// 2. VALUES IMAGE (Dark Night Truck)
 const VALUES_IMAGE = "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=2070&auto=format&fit=crop";
+
+// --- 2. TEAM IMPORTS ---
+import herveImg from '../assets/herve.jpg';
+import bertinImg from '../assets/bertin.jpg';
+import justineImg from '../assets/justine.jpg';
+import sharonImg from '../assets/sharon.jpg';
+import rogerImg from '../assets/roger.jpg';
+import kalisaImg from '../assets/kalisa.jpg'; // RESTORED KALISA
+import deborahImg from '../assets/deborah.jpeg';
 
 // --- COUNTER COMPONENT ---
 const Counter = ({ value, suffix = "" }: { value: number, suffix?: string }) => {
@@ -48,10 +53,27 @@ const values = [
 ];
 
 const team = [
-  { name: 'Herve Tuyishime', role: 'CEO', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop' },
-  { name: 'Gilles Uwimpaye', role: 'CFO', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop' },
-  { name: 'Nsimba Samuel', role: 'Operations Manager', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=1000&auto=format&fit=crop' },
-  { name: 'Rukinga Theophille', role: 'Fleet Manager', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop' },
+  // LEADERSHIP
+  { name: 'Herve Tuyishime', role: 'CEO', image: herveImg },
+  { name: 'Bertin Nsengiyumva', role: 'Managing Director', image: bertinImg },
+  
+  // CHELSEA (Placeholder)
+  { 
+    name: 'Chelsea Ellingsen', 
+    role: 'Investments & Sustainability Exec', 
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop' 
+  },
+  
+  { name: 'Justine Umuhoza', role: 'HR Manager', image: justineImg },
+  
+  // MANAGEMENT
+  { name: 'Sharon Zitoni', role: 'Operations Associate', image: sharonImg },
+  { name: 'Roger Nshimiyimana', role: 'Accountant', image: rogerImg },
+  
+  // KALISA (Restored Real Image)
+  { name: 'Kalisa Karangwa', role: 'Fleet Manager', image: kalisaImg },
+  
+  { name: 'Deborah Robwa', role: 'AG Project Manager', image: deborahImg },
 ];
 
 const stats = [
@@ -75,11 +97,7 @@ const AboutPage = () => {
           style={{ y, backgroundImage: `url('${HERO_IMAGE}')` }}
           className="absolute inset-0 bg-cover bg-center"
         />
-        
-        {/* 1. Subtle Green Tint (40% Opacity) */}
         <div className="absolute inset-0 bg-[#0d3326]/40"></div>
-        
-        {/* 2. Gradient Overlay for Text Readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d3326] via-transparent to-black/30"></div>
 
         <div className="relative z-10 text-center px-4 mt-20">
@@ -98,8 +116,6 @@ const AboutPage = () => {
       {/* --- STORY & STATS SECTION --- */}
       <section className="relative py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-            
-            {/* Left: The Story */}
             <div>
                 <Reveal>
                     <h2 className="text-3xl font-bold text-trukGreen mb-6 uppercase tracking-tight">Our Journey</h2>
@@ -116,7 +132,6 @@ const AboutPage = () => {
                 </Reveal>
             </div>
 
-            {/* Right: Stats Grid (ANIMATED) */}
             <div className="grid grid-cols-2 gap-6">
                 {stats.map((stat, idx) => (
                     <Reveal key={idx} delay={idx * 0.1}>
@@ -124,12 +139,9 @@ const AboutPage = () => {
                             <div className="text-trukGreen mb-4 flex justify-center group-hover:scale-110 transition-transform">
                                 {React.cloneElement(stat.icon, { size: 32 })}
                             </div>
-                            
-                            {/* Animated Number */}
                             <div className="text-4xl font-black text-gray-900 mb-2">
                                 <Counter value={stat.value} suffix={stat.suffix} />
                             </div>
-                            
                             <div className="text-sm font-bold text-gray-500 uppercase tracking-wider">{stat.label}</div>
                         </div>
                     </Reveal>
@@ -141,7 +153,6 @@ const AboutPage = () => {
       {/* --- MISSION & VISION --- */}
       <section className="relative py-24 bg-gray-50">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
-          
           <Reveal width="100%">
             <div className="bg-white p-10 rounded-[2rem] shadow-xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-trukGreen/10 rounded-bl-full -mr-8 -mt-8 transition-all group-hover:bg-trukGreen/20"></div>
@@ -167,13 +178,11 @@ const AboutPage = () => {
               </p>
             </div>
           </Reveal>
-
         </div>
       </section>
 
-      {/* --- OUR VALUES (Split Layout - Dark) --- */}
+      {/* --- VALUES --- */}
       <section className="relative py-24 bg-[#0d3326] overflow-hidden">
-         {/* Background Image Panel */}
          <div 
             className="absolute top-0 right-0 w-full lg:w-1/2 h-full bg-cover bg-center opacity-10 lg:opacity-60" 
             style={{ backgroundImage: `url('${VALUES_IMAGE}')` }}
@@ -182,8 +191,6 @@ const AboutPage = () => {
          </div>
 
          <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
-             
-             {/* Left: Title & Intro */}
              <div className="text-white">
                  <Reveal>
                      <h2 className="text-4xl font-extrabold mb-6 uppercase tracking-tight">Our Core Values</h2>
@@ -195,8 +202,6 @@ const AboutPage = () => {
                      </p>
                  </Reveal>
              </div>
-
-             {/* Right: Floating Cards List */}
              <div className="grid gap-6">
                  {values.map((val, idx) => (
                      <Reveal key={idx} delay={idx * 0.1} width="100%">
@@ -217,37 +222,32 @@ const AboutPage = () => {
 
       {/* --- MEET OUR TEAM --- */}
       <section className="py-32 bg-gray-100">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+        <div className="max-w-7xl mx-auto px-6 text-center">
           <Reveal width="100%">
-            <h2 className="text-3xl font-bold text-trukGreen mb-4 uppercase tracking-tight">Leadership Team</h2>
+            <h2 className="text-3xl font-bold text-trukGreen mb-4 uppercase tracking-tight">Meet Our Team</h2>
             <div className="h-1.5 w-20 bg-[#FAD201] mx-auto rounded-full mb-16"></div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, idx) => (
-              <Reveal key={idx} delay={idx * 0.15}>
-                <div className="group relative overflow-hidden rounded-[2rem] shadow-xl aspect-[3/4]">
+              <Reveal key={idx} delay={idx * 0.1}>
+                <div className="group relative overflow-hidden rounded-[2rem] shadow-xl aspect-[3/4] bg-white">
                   {/* Image */}
                   <img 
                     src={member.image} 
                     alt={member.name} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
+                    // RESTORED: Grayscale by default, Color on Hover
+                    // ADDED: mix-blend-multiply to fix "shiny/reflected" light on white backgrounds
+                    className="w-full h-full object-cover transition-all duration-700 filter grayscale group-hover:grayscale-0 group-hover:scale-110 mix-blend-multiply group-hover:mix-blend-normal"
                   />
                   
                   {/* Overlay Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0d3326] via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
                   
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 w-full p-8 text-left transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="font-bold text-white text-xl mb-1">{member.name}</h3>
-                    <p className="text-[#FAD201] text-sm font-bold uppercase tracking-wider mb-4">{member.role}</p>
-                    
-                    {/* Social Icon */}
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                      <a href="#" className="inline-flex p-2 bg-white/20 rounded-full text-white hover:bg-[#FAD201] hover:text-trukGreen transition-colors">
-                        <Linkedin size={18} />
-                      </a>
-                    </div>
+                  {/* Content (No LinkedIn) */}
+                  <div className="absolute bottom-0 left-0 w-full p-6 text-left transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="font-bold text-white text-lg leading-tight mb-1">{member.name}</h3>
+                    <p className="text-[#FAD201] text-xs font-bold uppercase tracking-widest">{member.role}</p>
                   </div>
                 </div>
               </Reveal>
