@@ -16,7 +16,7 @@ import bertinImg from '../assets/bertin.jpg';
 import justineImg from '../assets/justine.jpg';
 import sharonImg from '../assets/sharon.jpg';
 import rogerImg from '../assets/roger.jpg';
-import kalisaImg from '../assets/kalisa.jpg'; // RESTORED KALISA
+import kalisaImg from '../assets/kalisa.jpg'; 
 import deborahImg from '../assets/deborah.jpeg';
 
 // --- COUNTER COMPONENT ---
@@ -69,10 +69,7 @@ const team = [
   // MANAGEMENT
   { name: 'Sharon Zitoni', role: 'Operations Associate', image: sharonImg },
   { name: 'Roger Nshimiyimana', role: 'Accountant', image: rogerImg },
-  
-  // KALISA (Restored Real Image)
   { name: 'Kalisa Karangwa', role: 'Fleet Manager', image: kalisaImg },
-  
   { name: 'Deborah Robwa', role: 'AG Project Manager', image: deborahImg },
 ];
 
@@ -236,9 +233,9 @@ const AboutPage = () => {
                   <img 
                     src={member.image} 
                     alt={member.name} 
-                    // RESTORED: Grayscale by default, Color on Hover
-                    // ADDED: mix-blend-multiply to fix "shiny/reflected" light on white backgrounds
-                    className="w-full h-full object-cover transition-all duration-700 filter grayscale group-hover:grayscale-0 group-hover:scale-110 mix-blend-multiply group-hover:mix-blend-normal"
+                    // FIX APPLIED: object-top
+                    // This forces the image to focus on the face (top) instead of the center
+                    className="w-full h-full object-cover object-top transition-transform duration-700 filter grayscale group-hover:grayscale-0 group-hover:scale-105"
                   />
                   
                   {/* Overlay Gradient */}
