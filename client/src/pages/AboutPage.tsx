@@ -18,6 +18,7 @@ import sharonImg from '../assets/sharon.jpg';
 import rogerImg from '../assets/roger.jpg';
 import kalisaImg from '../assets/kalisa.jpg'; // RESTORED KALISA
 import deborahImg from '../assets/deborah.jpeg';
+import chelseaImg from '../assets/chelsea1.jpeg';
 
 // --- COUNTER COMPONENT ---
 const Counter = ({ value, suffix = "" }: { value: number, suffix?: string }) => {
@@ -61,7 +62,7 @@ const team = [
   { 
     name: 'Chelsea Ellingsen', 
     role: 'Investments & Sustainability Exec', 
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop' 
+    image: chelseaImg
   },
   
   { name: 'Justine Umuhoza', role: 'HR Manager', image: justineImg },
@@ -238,7 +239,7 @@ const AboutPage = () => {
                     alt={member.name} 
                     // RESTORED: Grayscale by default, Color on Hover
                     // ADDED: mix-blend-multiply to fix "shiny/reflected" light on white backgrounds
-                    className="w-full h-full object-cover transition-all duration-700 filter grayscale group-hover:grayscale-0 group-hover:scale-110 mix-blend-multiply group-hover:mix-blend-normal"
+                    className="w-full h-full object-cover object-top transition-all duration-700 filter grayscale group-hover:grayscale-0 group-hover:scale-110 mix-blend-multiply group-hover:mix-blend-normal"
                   />
                   
                   {/* Overlay Gradient */}
