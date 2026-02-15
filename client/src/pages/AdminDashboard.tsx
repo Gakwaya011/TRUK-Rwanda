@@ -20,7 +20,9 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       // Fetch either jobs or blogs based on the tab
-      const endpoint = activeTab === 'jobs' ? 'https://truk-rwanda-backend.onrender.com/api/jobs' : 'https://truk-rwanda-backend.onrender.com/api/blogs';
+      const endpoint = activeTab === 'jobs' 
+  ? `${import.meta.env.VITE_API_URL}/jobs` 
+  : `${import.meta.env.VITE_API_URL}/blogs`;
       const res = await fetch(endpoint);
       const data = await res.json();
       setItems(data);
@@ -35,9 +37,9 @@ const AdminDashboard = () => {
     if(!window.confirm("Are you sure you want to delete this?")) return;
 
     const token = localStorage.getItem('token');
-    const endpoint = activeTab === 'jobs' 
-      ? `https://truk-rwanda-backend.onrender.com/api/jobs/${id}` 
-      : `https://truk-rwanda-backend.onrender.com/api/blogs/${id}`;
+    const endpoint = activeTab === 'jobs'
+  ? `${import.meta.env.VITE_API_URL}/jobs/${id}` 
+  : `${import.meta.env.VITE_API_URL}/blogs/${id}`;
 
     try {
       const res = await fetch(endpoint, {

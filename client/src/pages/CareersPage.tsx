@@ -20,7 +20,7 @@ const CareersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('https://truk-rwanda-backend.onrender.com/api/jobs')
+    fetch(`${import.meta.env.VITE_API_URL}/jobs`)
       .then(res => res.json())
       .then(data => {
         setJobs(data);

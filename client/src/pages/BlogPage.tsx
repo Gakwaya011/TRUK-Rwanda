@@ -9,7 +9,7 @@ const BlogPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://truk-rwanda-backend.onrender.com/api/blogs')
+    fetch(`${import.meta.env.VITE_API_URL}/blogs`)
       .then(res => res.json())
       .then(data => {
         setPosts(data);

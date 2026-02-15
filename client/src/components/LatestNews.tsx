@@ -7,7 +7,7 @@ const LatestNews = () => {
   const [stories, setStories] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('https://truk-rwanda-backend.onrender.com/api/blogs')
+    fetch(`${import.meta.env.VITE_API_URL}/blogs`)
       .then(res => res.json())
       .then(data => {
         const featured = data.filter((story: any) => 

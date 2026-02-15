@@ -20,14 +20,14 @@ import AddBlog from './pages/AddBlog';
 import AddJob from './pages/AddJob';
 import BlogPage from './pages/BlogPage';
 import BlogDetail from './pages/BlogDetail';
-import JobDetail from './pages/JobDetail.tsx';
-import EditBlog from './pages/EditBlog.tsx';
-import ContactSection from './components/ContactSection.tsx';
-import LatestNews from './components/LatestNews.tsx';
-import Navbar from './components/Navbar.tsx';
-import Partners from './components/Partners.tsx';
-import Preloader from './components/Preloader.tsx';
-import NotFound from './pages/NotFound.tsx';
+import JobDetail from './pages/JobDetail';
+import EditBlog from './pages/EditBlog';
+import ContactSection from './components/ContactSection';
+import LatestNews from './components/LatestNews';
+import Navbar from './components/Navbar';
+import Partners from './components/Partners';
+import Preloader from './components/Preloader';
+import NotFound from './pages/NotFound';
 
 const Home = () => (
   <>

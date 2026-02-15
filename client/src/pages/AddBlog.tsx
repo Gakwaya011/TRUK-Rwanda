@@ -41,7 +41,7 @@ const AddBlog = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('https://truk-rwanda-backend.onrender.com/api/blogs', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/blogs`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: data

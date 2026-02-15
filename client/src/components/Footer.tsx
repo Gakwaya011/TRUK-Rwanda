@@ -77,7 +77,7 @@ const Footer = () => {
         {/* BOTTOM: COPYRIGHT & LEGAL */}
         <div className="flex flex-col md:flex-row justify-between items-center mt-8 text-[10px] text-gray-500 font-medium tracking-wide">
           <div className="opacity-70">
-             © 2025 TRUK Rwanda Ltd. All Rights Reserved.
+             © 2026 TRUK Rwanda Ltd. All Rights Reserved.
           </div>
           <div className="flex gap-4 mt-2 md:mt-0">
              <Link to="#" className="hover:text-[#FAD201] transition-colors">Privacy Policy</Link>
